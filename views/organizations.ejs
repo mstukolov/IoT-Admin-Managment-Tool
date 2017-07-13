@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TEST HTML</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        window.onload = function () {
+            var theTbl = document.getElementById("dataTable").getElementsByTagName("tr");
+            for(var i=1;i<theTbl.length;i++)
+            {
+                if(theTbl[i].getElementsByTagName("td")[3].innerHTML == 'false'){
+                    theTbl[i].className  = 'bg-danger'
+                }else{
+                    theTbl[i].className  = 'bg-success'
+                }
+            }
+            var onChange = function(evt) {
+                var request;
+                if(this.id.match('name')){
+                    request = '/updateOrganization?orgId=' + (this.id).substr(5,6) + '&name=' + this.value;
+                }
+                if(this.id.match('domen')){
+                    request = '/updateOrganization?orgId=' + (this.id).substr(6,7) + '&domen=' + this.value;
+                }
+                console.info(request);
+                $.get(request, function(data, status){});
+            };
+            var inputs = document.getElementsByClassName('editable');
+            for(var i=0;i<inputs.length;i++){
+                inputs[i].addEventListener('input', onChange, false);
+            }
+
+        }
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">C2M Admin Panel</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/organizations">Организации</a></li>
+            <li><a href="#">Пользователи</a></li>
+            <li><a href="#">Роли</a></li>
+            <li><a href="#">Права доступа</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+    </div>
+</nav>
+    <form name = "create" id="createForm" action="/createNewOrganization" method = "GET">
+        <button id = "newThread" class="btn btn-primary" type="submit">Создать организацию</button>
+    </form>
+    <table  id="dataTable" class="datatable table table-bordered">
+        <tr>
+            <th width="50px">No</th>
+            <th>Название</th>
+            <th>Домен</th>
+            <th>Активен</th>
+            <th>Блокировка</th>
+            <th>Удаление</th>
+
+        </tr>
+        <% if(orglist.length){
+        for(var i = 0;i < orglist.length;i++) { %>
+        <tr id="<%=orglist[i].id%>" class="bg-info">
+            <td><%=orglist[i].id%></td>
+            <td>
+                <input id="name_<%=orglist[i].id%>" type="text" class="form-control editable" value="<%=orglist[i].organization%>">
+            </td>
+            <td><input type="text" id="domen_<%=orglist[i].id%>" class="form-control editable" value="<%=orglist[i].domen%>"></td>
+            <td><%=orglist[i].active%></td>
+            <td>
+                <a href="/blockOrganization?orgId=<%=orglist[i].id%>&active=0">Заблокировать</a>
+                <a href="/blockOrganization?orgId=<%=orglist[i].id%>&active=1">Разблокировать</a>
+            </td>
+
+            <td>
+                <a href="/deleteOrganization?orgId=<%=orglist[i].id%>">Удалить</a>
+            </td>
+        </tr>
+        <% }
+        }else{ %>
+        <tr>
+            <td colspan="3">No data</td>
+        </tr>
+        <% } %>
+    </table>
+
+</body>
+</html>

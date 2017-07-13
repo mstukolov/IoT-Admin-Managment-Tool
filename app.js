@@ -5,6 +5,7 @@
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+var path = require('path')
 
 // Set up the express app
 const app = express();
@@ -18,14 +19,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.set('view options', { layout: false });
+app.use(express.static(__dirname + '/views'))
+
 // Setup a default catch-all route that sends back a welcome message in JSON format.
 app.get('/', function(req, res) {
     res.sendFile(__dirname + "/views/index.html")
 });
 
-app.get('/hello', (req, res) => res.status(200).send({
-    message: 'Hello from NodeJS and MAKS',
-}));
+app.get('/organizations', function (req, res, next) {
+    organization.list(req, res)
+});
 
 app.get('/createNewOrganization', function (req, res, next) {
     organization.create(req, res)
@@ -42,6 +48,9 @@ app.get('/findOrganization', function (req, res, next) {
 
 app.get('/getAllOrganizations', function (req, res, next) {
     organization.list(req, res)
+});
+app.get('/blockOrganization', function (req, res, next) {
+    organization.update(req, res)
 });
 
 module.exports = app;

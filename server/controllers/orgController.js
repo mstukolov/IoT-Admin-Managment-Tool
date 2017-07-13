@@ -8,39 +8,42 @@ module.exports = {
         return Organizations
                 .create({
                     organization: req.query.organization,
-                    domen: '1',
-                    active: true
+                    domen: 0,
+                    active: false
                 })
-        .then(organizations => res.status(201).send(organizations))
+        .then(res.redirect('/organizations'))
         .catch(error => res.status(400).send(error));
     },
     update(req, res) {
         return Organizations
                 .findById(req.query.orgId)
                 .then(organization => {
-                if (!organization) { return res.status(404).send({
-                    message: 'Todo Not Found',
-                });
-        }
-        return organization
-                .update({
-                    //title: req.body.title || organization.organization,
-                    organization: req.query.name || organization.organization,
-                })
-                .then(() => res.status(200).send(todo))  // Send back the updated todo.
-                .catch((error) => res.status(400).send(error));
+                    if (!organization) { return res.status(404).send({
+                            message: 'Organization Not Found',
+                        });
+                    }
+                    return organization
+                    .update({
+                        organization: req.query.name || organization.organization,
+                        domen: req.query.domen || organization.domen,
+                        active: req.query.active || organization.active,
+                    })
+                    .then(res.redirect('/organizations'))
+                    .catch((error) => res.status(400).send(error));
                 })
                 .catch((error) => res.status(400).send(error));
     },
     list(req, res) {
         return Organizations
                 .all()
-                .then(list => res.status(200).send(list))
+                //.then(list => res.status(200).send(list))
+                .then(list => res.status(200).render('organizations', {orglist : list }))
+
                 .catch(error => res.status(400).send(error));
     },
     retrieve(req, res) {
         return Organizations
-                .findById(req.query.organization)
+                .findById(req.query.orgId)
                 .then(organization => {
                 if (!organization) {
             return res.status(404).send({
@@ -62,7 +65,7 @@ module.exports = {
                 }
                 return organization
                 .destroy()
-                .then(() => res.status(204).send())
+                .then(res.redirect('/organizations'))
                 .catch(error => res.status(400).send(error));
                 })
                 .catch(error => res.status(400).send(error));
