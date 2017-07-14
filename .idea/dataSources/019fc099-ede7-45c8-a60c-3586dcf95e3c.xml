@@ -25,7 +25,7 @@
     <table id="19" parent="2" name="map_action_userrole_table"/>
     <table id="20" parent="2" name="organizations"/>
     <table id="21" parent="2" name="user_roles_table"/>
-    <table id="22" parent="2" name="users_table"/>
+    <table id="22" parent="2" name="users"/>
     <column id="23" parent="18" name="actionid">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
@@ -147,50 +147,58 @@
       <ColNames>role</ColNames>
       <UnderlyingIndexName>user_roles_role_uindex</UnderlyingIndexName>
     </key>
-    <column id="51" parent="22" name="userid">
+    <column id="51" parent="22" name="user">
+      <Position>2</Position>
+      <DataType>varchar(100)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="52" parent="22" name="password">
+      <Position>3</Position>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <column id="53" parent="22" name="orgid">
+      <Position>4</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <column id="54" parent="22" name="roleid">
+      <Position>5</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <column id="55" parent="22" name="status">
+      <Position>6</Position>
+      <DataType>tinyint(1)|0</DataType>
+    </column>
+    <column id="56" parent="22" name="recid">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="52" parent="22" name="user">
-      <Position>2</Position>
-      <DataType>varchar(100)|0</DataType>
-      <NotNull>1</NotNull>
+    <column id="57" parent="22" name="createdAt">
+      <Position>7</Position>
+      <DataType>timestamp|0</DataType>
     </column>
-    <column id="53" parent="22" name="password">
-      <Position>3</Position>
-      <DataType>varchar(100)|0</DataType>
+    <column id="58" parent="22" name="updatedAt">
+      <Position>8</Position>
+      <DataType>timestamp|0</DataType>
     </column>
-    <column id="54" parent="22" name="orgid">
-      <Position>4</Position>
-      <DataType>varchar(100)|0</DataType>
-    </column>
-    <column id="55" parent="22" name="roleid">
-      <Position>5</Position>
-      <DataType>varchar(100)|0</DataType>
-    </column>
-    <column id="56" parent="22" name="status">
-      <Position>6</Position>
-      <DataType>tinyint(1)|0</DataType>
-    </column>
-    <index id="57" parent="22" name="users_userid_uindex">
-      <ColNames>userid</ColNames>
+    <index id="59" parent="22" name="users_userid_uindex">
+      <ColNames>recid</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="58" parent="22" name="users_user_uindex">
+    <index id="60" parent="22" name="users_user_uindex">
       <ColNames>user</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="59" parent="22" name="PRIMARY">
-      <ColNames>userid</ColNames>
+    <key id="61" parent="22" name="PRIMARY">
+      <ColNames>recid</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="60" parent="22" name="users_userid_uindex">
-      <ColNames>userid</ColNames>
+    <key id="62" parent="22" name="users_userid_uindex">
+      <ColNames>recid</ColNames>
       <UnderlyingIndexName>users_userid_uindex</UnderlyingIndexName>
     </key>
-    <key id="61" parent="22" name="users_user_uindex">
+    <key id="63" parent="22" name="users_user_uindex">
       <ColNames>user</ColNames>
       <UnderlyingIndexName>users_user_uindex</UnderlyingIndexName>
     </key>

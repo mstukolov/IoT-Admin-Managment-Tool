@@ -36,9 +36,7 @@ module.exports = {
     list(req, res) {
         return Organizations
                 .all()
-                //.then(list => res.status(200).send(list))
                 .then(list => res.status(200).render('organizations', {orglist : list }))
-
                 .catch(error => res.status(400).send(error));
     },
     retrieve(req, res) {

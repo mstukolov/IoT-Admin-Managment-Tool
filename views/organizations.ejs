@@ -33,6 +33,10 @@
                 inputs[i].addEventListener('input', onChange, false);
             }
 
+            $("[readonly]").dblclick(
+                function(){
+                    this.readOnly = false;
+                });
         }
     </script>
 </head>
@@ -44,9 +48,9 @@
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="/organizations">Организации</a></li>
-            <li><a href="#">Пользователи</a></li>
-            <li><a href="#">Роли</a></li>
-            <li><a href="#">Права доступа</a></li>
+            <li><a href="/users">Пользователи</a></li>
+            <li><a href="/roles">Роли</a></li>
+            <li><a href="/roots">Права доступа</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -57,13 +61,15 @@
     <form name = "create" id="createForm" action="/createNewOrganization" method = "GET">
         <button id = "newThread" class="btn btn-primary" type="submit">Создать организацию</button>
     </form>
+<br/>
     <table  id="dataTable" class="datatable table table-bordered">
         <tr>
             <th width="50px">No</th>
             <th>Название</th>
             <th>Домен</th>
             <th>Активен</th>
-            <th>Блокировка</th>
+            <th>Блокировать</th>
+            <th>Разблокировать</th>
             <th>Удаление</th>
 
         </tr>
@@ -72,15 +78,16 @@
         <tr id="<%=orglist[i].id%>" class="bg-info">
             <td><%=orglist[i].id%></td>
             <td>
-                <input id="name_<%=orglist[i].id%>" type="text" class="form-control editable" value="<%=orglist[i].organization%>">
+                <input id="name_<%=orglist[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=orglist[i].organization%>">
             </td>
-            <td><input type="text" id="domen_<%=orglist[i].id%>" class="form-control editable" value="<%=orglist[i].domen%>"></td>
+            <td><input type="text" readonly="readonly" id="domen_<%=orglist[i].id%>" class="form-control editable" value="<%=orglist[i].domen%>"></td>
             <td><%=orglist[i].active%></td>
             <td>
                 <a href="/blockOrganization?orgId=<%=orglist[i].id%>&active=0">Заблокировать</a>
+            </td>
+            <td>
                 <a href="/blockOrganization?orgId=<%=orglist[i].id%>&active=1">Разблокировать</a>
             </td>
-
             <td>
                 <a href="/deleteOrganization?orgId=<%=orglist[i].id%>">Удалить</a>
             </td>

@@ -11,6 +11,7 @@ var path = require('path')
 const app = express();
 
 const organization = require(__dirname + '/server/controllers/orgController');
+const usersController = require(__dirname + '/server/controllers/usersController');
 
 // Log requests to the console.
 app.use(logger('dev'));
@@ -29,10 +30,20 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + "/views/index.html")
 });
 
+//routing to main views
 app.get('/organizations', function (req, res, next) {
     organization.list(req, res)
 });
-
+app.get('/users', function (req, res, next) {
+    usersController.list(req, res)
+});
+app.get('/roles', function (req, res, next) {
+    res.render('roles')
+});
+app.get('/roots', function (req, res, next) {
+    res.render('roots')
+});
+//---------------Routing for Organization Controller--------------------------------------
 app.get('/createNewOrganization', function (req, res, next) {
     organization.create(req, res)
 });
@@ -52,5 +63,22 @@ app.get('/getAllOrganizations', function (req, res, next) {
 app.get('/blockOrganization', function (req, res, next) {
     organization.update(req, res)
 });
+//------------Routing for userController---------------------
+app.get('/createUser', function (req, res, next) {
+    usersController.create(req, res)
+});
+app.get('/updateUser', function (req, res, next) {
+    usersController.update(req, res)
+});
+app.get('/deleteUser', function (req, res, next) {
+    usersController.destroy(req, res)
+});
+app.get('/findUser', function (req, res, next) {
+    usersController.retrieve(req, res)
+});
 
+app.get('/getAllUsers', function (req, res, next) {
+    usersController.list(req, res)
+});
+//------------------------------------------------------------
 module.exports = app;
