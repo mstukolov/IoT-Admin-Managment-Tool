@@ -7,6 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/users.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/c2mUI.css">
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -52,7 +53,11 @@
             <input id="name_<%=users[i].recid%>" readonly="readonly" type="text" class="form-control editable" value="<%=users[i].user%>">
         </td>
         <td><input type="text" readonly="readonly" id="passw_<%=users[i].recid%>" class="form-control editable" value="<%=users[i].password%>"></td>
-        <td><%=users[i].orgid%></td>
+        <td>
+            <input type="button" value="..." id="lookupUsers_<%=users[i].recid%>" class="lookupUsers">
+            <%=users[i].orgid%>
+
+        </td>
         <td><%=users[i].roleid%></td>
         <td><input type="checkbox" id="status_<%=users[i].recid%>" <%if (users[i].status == 1) {%>  checked="checked"  <%}%> style="width: 20px; height: 20px;"/></td>
         <td>
@@ -73,23 +78,33 @@
     </tr>
     <% } %>
 </table>
-<div class="modal fade" id="addOrganizationDialog" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content Device delete-->
-        <div class="modal-content" style="width: 800px">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h2 class="modal-title">Укажите организацию</h2>
-                <div class="container">
-                    <h3>Пользователь:</h3>
-                    <input type="text" name="userId" id="userId" value=""/>
-                </div>
-            </div>
-            <div class="modal-body">
-                <button type="button" class="btn btn-warning">Привязать</button>
-            </div>
-        </div>
+<!-- The Modal -->
+<div id="organizationLookup" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content" style="width:850px;">
+        <span class="close">&times;</span>
+        <p>Выбор организации</p>
+        Пользователь:<span name="lineId" id="lineId"></span>
+        <br/>
+        <input type="text" class="form-control" id="findInput" onkeyup="findFunction('lookupOrgTable')" placeholder="Search for names..">
+        <table class="table table-bordered table-hover table-striped" id="lookupOrgTable">
+            <thead>
+            <tr id="row00" class="bg-info">
+                <th>Выбор</th>
+                <th>Id</th>
+                <th>Организация</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+
+
+        <button type="button" class="btn btn-default">Ok</button>
+        <button type="button" class="btn btn-default" onclick="organizationLookup.style.display = 'none'">Отмена</button>
     </div>
+
 </div>
 </body>
 </html>

@@ -39,6 +39,12 @@ module.exports = {
                 .then(list => res.status(200).render('organizations', {orglist : list }))
                 .catch(error => res.status(400).send(error));
     },
+    listRaw(req, res) {
+        return Organizations
+                .all()
+                .then(list => res.status(200).send(list))
+    .catch(error => res.status(400).send(error));
+    },
     retrieve(req, res) {
         return Organizations
                 .findById(req.query.orgId)

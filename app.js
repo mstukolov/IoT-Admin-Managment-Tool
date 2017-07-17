@@ -60,6 +60,10 @@ app.get('/findOrganization', function (req, res, next) {
 app.get('/getAllOrganizations', function (req, res, next) {
     organization.list(req, res)
 });
+app.get('/getLookupOrganizations', function (req, res, next) {
+    organization.listRaw(req, res)
+});
+
 app.get('/blockOrganization', function (req, res, next) {
     organization.update(req, res)
 });
