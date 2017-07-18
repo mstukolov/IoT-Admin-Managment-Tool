@@ -3,6 +3,8 @@
  */
 window.onload = function () {
 
+        $("[readonly]").dblclick(function(){this.readOnly = false;});
+
         var onChange = function(evt) {
             var request;
             if(this.id.match('name')){
@@ -19,56 +21,41 @@ window.onload = function () {
             inputs[i].addEventListener('input', onChange, false);
         }
 
-        $("[readonly]").dblclick(
-            function(){
-                this.readOnly = false;
-            });
+        //Функция обновления поля статус в таблице ползователи
         $("[type=checkbox]").on("click", function(){
             if ($(this).attr("checked")==undefined) {
                 $(this).attr("checked","checked");
                 $.get('/updateUser?recid=' + (this.id).substr(7,8) + '&status=true', function(data, status){});
-                console.info(this.id + ' was checked');
             } else {
                 $(this).attr("checked",false);
                 $.get('/updateUser?recid=' + (this.id).substr(7,8) + '&status=false', function(data, status){});
-                console.info(this.id + ' was UNchecked');
             }
         });
-
+        //Функция открытия диалогового окна для привзяки организации к пользователю
         $(document).on("click", ".open-addOrgDialog", function () {
             var userId = $(this).data('id');
             $(".modal-body #userId").val( userId );
         });
 
-
-
+        //Блок кода для запроса существующих орагнизаций для привязки в лукапе
         var organizationLookup = document.getElementById('organizationLookup');
-
         $(document).on("click", ".lookupUsers", function () {
             console.log('Нажата кнопка лукапа:' + this.id)
             organizationLookup.style.display = "block";
-            document.getElementById("lineId").innerHTML = this.id;
-
+            document.getElementById("recId").innerHTML = this.id;
             $.ajax({
                 type: 'GET',
                 url: '/getLookupOrganizations',
                 success: function(result) {
 
-                    console.log(result)
-
                     $('#lookupOrgTable tr:not(:first)').remove();
                     for (var index = 0; index< result.length; index++) {
-
-                        console.log(result[index]['id'] +'::'+ result[index]['organization'])
-                        var row = $('<tr id="row'+ index +'">' +
-                            '<td><input type="checkbox" id="chk_' + result[index].id + '" style="width: 20px; height: 20px;"/></td>' +
+                        var row = $('<tr id="'+ result[index].id +'" class="lookup-row">' +
                             '<td><output type="text" id="type_' + result[index].id + '" style="font-size: larger">'+ result[index].id +'</output></td>' +
                             '<td><output type="text" id="name_' + result[index].id + '" style="font-size: larger">'+ result[index].organization +'</output></td>' +
                             '</tr>');
-
                         $("#lookupOrgTable").append(row);
                     }
-
                 }
             });
 
@@ -86,26 +73,7 @@ window.onload = function () {
                     organizationLookup.style.display = "none";
                 }
             }
-
     }
-function findFunction(tableId) {
-    // Declare variables
-    var input, filter, table, tr, td, i;
-    input = document.getElementById("findInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById(tableId);
-    tr = table.getElementsByTagName("tr");
 
-    // Loop through all table rows, and hide those who don't match the search query
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[2];
-        if (td) {
-            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    }
-}
+
 

@@ -6,8 +6,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/data-grid.js"></script>
     <script src="js/users.js"></script>
+
     <link rel="stylesheet" type="text/css" href="css/c2mUI.css">
+
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -32,6 +35,7 @@
     <button id = "newThread" class="btn btn-primary" type="submit">Создать пользователя</button>
 </form>
 <br/>
+<input type="text" class="form-control" id="findUsersInput" onkeyup="findTableRows('dataTable', this.id)" placeholder="Search for users..">
 <table  id="dataTable" class="datatable table table-bordered table-striped">
     <tr>
         <th width="50px">No</th>
@@ -54,9 +58,8 @@
         </td>
         <td><input type="text" readonly="readonly" id="passw_<%=users[i].recid%>" class="form-control editable" value="<%=users[i].password%>"></td>
         <td>
-            <input type="button" value="..." id="lookupUsers_<%=users[i].recid%>" class="lookupUsers">
-            <%=users[i].orgid%>
-
+            <input type="button" value="..." id="lookupBtn_<%=users[i].recid%>" class="lookupUsers">
+            <output id="orgLookup_<%=users[i].recid%>"><%=users[i].orgid%></output>
         </td>
         <td><%=users[i].roleid%></td>
         <td><input type="checkbox" id="status_<%=users[i].recid%>" <%if (users[i].status == 1) {%>  checked="checked"  <%}%> style="width: 20px; height: 20px;"/></td>
@@ -83,25 +86,20 @@
     <!-- Modal content -->
     <div class="modal-content" style="width:850px;">
         <span class="close">&times;</span>
-        <p>Выбор организации</p>
-        Пользователь:<span name="lineId" id="lineId"></span>
+        <h3>Выбор организации</h3>
+        Пользователь:<span name="recId" id="recId"></span>
         <br/>
-        <input type="text" class="form-control" id="findInput" onkeyup="findFunction('lookupOrgTable')" placeholder="Search for names..">
+        <input type="text" class="form-control" id="findInput" onkeyup="findTableRows('lookupOrgTable', this.id)" placeholder="Search for orgs..">
         <table class="table table-bordered table-hover table-striped" id="lookupOrgTable">
             <thead>
             <tr id="row00" class="bg-info">
-                <th>Выбор</th>
-                <th>Id</th>
+                <th>No</th>
                 <th>Организация</th>
             </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
-
-
-
-        <button type="button" class="btn btn-default">Ok</button>
         <button type="button" class="btn btn-default" onclick="organizationLookup.style.display = 'none'">Отмена</button>
     </div>
 

@@ -35,7 +35,7 @@ app.get('/organizations', function (req, res, next) {
     organization.list(req, res)
 });
 app.get('/users', function (req, res, next) {
-    usersController.list(req, res)
+    usersController.listJoinRef(req, res)
 });
 app.get('/roles', function (req, res, next) {
     res.render('roles')
