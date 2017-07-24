@@ -12,6 +12,7 @@ const app = express();
 
 const organization = require(__dirname + '/server/controllers/orgController');
 const usersController = require(__dirname + '/server/controllers/usersController');
+const accessrolesController = require(__dirname + '/server/controllers/accessrolesController');
 
 // Log requests to the console.
 app.use(logger('dev'));
@@ -84,5 +85,28 @@ app.get('/findUser', function (req, res, next) {
 app.get('/getAllUsers', function (req, res, next) {
     usersController.list(req, res)
 });
-//------------------------------------------------------------
+//---------------Routing for AccessRoles Controller--------------------------------------
+app.get('/createRole', function (req, res, next) {
+    accessrolesController.create(req, res)
+});
+app.get('/updateRole', function (req, res, next) {
+    accessrolesController.update(req, res)
+});
+app.get('/deleteRole', function (req, res, next) {
+    accessrolesController.destroy(req, res)
+});
+app.get('/findRole', function (req, res, next) {
+    accessrolesController.retrieve(req, res)
+});
+
+app.get('/getRoles', function (req, res, next) {
+    accessrolesController.list(req, res)
+});
+/*
+app.get('/getLookupRoles', function (req, res, next) {
+    accessrolesController.listRaw(req, res)
+});
+*/
+
+//-------------------------------------------------
 module.exports = app;

@@ -44,8 +44,6 @@
         <th>Организация</th>
         <th>Роль</th>
         <th>Статус</th>
-        <th>Организация</th>
-        <th>Роль</th>
         <th>Удаление</th>
 
     </tr>
@@ -58,18 +56,22 @@
         </td>
         <td><input type="text" readonly="readonly" id="passw_<%=users[i].recid%>" class="form-control editable" value="<%=users[i].password%>"></td>
         <td>
-            <input type="button" value="..." id="lookupBtn_<%=users[i].recid%>" class="lookupUsers">
-            <output id="orgLookup_<%=users[i].recid%>"><%=users[i].orgid%></output>
-        </td>
-        <td><%=users[i].roleid%></td>
-        <td><input type="checkbox" id="status_<%=users[i].recid%>" <%if (users[i].status == 1) {%>  checked="checked"  <%}%> style="width: 20px; height: 20px;"/></td>
-        <td>
-            <a href="/blockUser?recid=<%=users[i].recid%>&active=0">Выбрать</a>
-            <a data-toggle="modal" href="#addOrganizationDialog" data-id="<%=users[i].user%>" class="open-addOrgDialog">Привязать к организации</a>
+            <output id="orgLookup_<%=users[i].recid%>">
+                <%=users[i].org.organization%>
+                <input type="button" value="..." id="lookupBtn_<%=users[i].recid%>" class="lookupUsers">
+            </output>
+
         </td>
         <td>
-            <a href="/blockUser?recid=<%=users[i].recid%>&active=1">Выбрать</a>
+            <output id="orgLookup_<%=users[i].recid%>">
+                <%=users[i].roleid%>
+                <input type="button" value="..." id="lookupBtn_<%=users[i].recid%>" class="lookupRoles">
+            </output>
         </td>
+        <td>
+            <input type="checkbox" id="status_<%=users[i].recid%>" <%if (users[i].status == 1) {%>  checked="checked"  <%}%> style="width: 20px; height: 20px;"/>
+        </td>
+
         <td>
             <a href="/deleteUser?recid=<%=users[i].recid%>">Удалить</a>
         </td>

@@ -41,12 +41,25 @@ const Users = sequelize.define('Users', {
     }
 });
 
-Users.belongsTo(Organizations, {as: 'org'});
-/*Organizations.findAll().then(organizations => {
-    console.log(organizations)
-})*/
+const Accessroles = sequelize.define('Accessroles', {
+    id:{type:DataTypes.BIGINT, primaryKey: true},
+    role: DataTypes.STRING
+}, {
+    classMethods: {
+        associate: function(models) {
 
-Users.findAll(
+        }
+    }
+});
+Accessroles.findAll().then(accessroles => {
+ console.log(accessroles)
+ })
+Users.belongsTo(Organizations, {as: 'org'});
+Organizations.findAll().then(organizations => {
+    console.log(organizations)
+})
+
+/*Users.findAll(
 
     {   attributes: ['recid','user', 'orgid'],
         include: [
@@ -54,4 +67,4 @@ Users.findAll(
     ]}
 ).then(users => {
     console.log(users)
-})
+})*/
