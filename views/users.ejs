@@ -58,13 +58,13 @@
         <td>
             <output id="orgLookup_<%=users[i].recid%>">
                 <%=users[i].org.organization%>
-                <input type="button" value="..." id="lookupBtn_<%=users[i].recid%>" class="lookupUsers">
+                <input type="button" value="..." id="lookupBtn_<%=users[i].recid%>" class="lookupOrgs">
             </output>
 
         </td>
         <td>
-            <output id="orgLookup_<%=users[i].recid%>">
-                <%=users[i].roleid%>
+            <output id="roleLookup_<%=users[i].recid%>">
+                <%=users[i].role.role%>
                 <input type="button" value="..." id="lookupBtn_<%=users[i].recid%>" class="lookupRoles">
             </output>
         </td>
@@ -104,7 +104,26 @@
         </table>
         <button type="button" class="btn btn-default" onclick="organizationLookup.style.display = 'none'">Отмена</button>
     </div>
-
+</div>
+<div id="rolesLookup" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content" style="width:850px;">
+        <span class="close">&times;</span>
+        <h3>Выбор роли</h3>
+        Пользователь:<span name="recId" id="recId"></span>
+        <br/>
+        <table class="table table-bordered table-hover table-striped" id="lookupRolesTable">
+            <thead>
+            <tr id="row00" class="bg-info">
+                <th>No</th>
+                <th>Роль</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-default" onclick="rolesLookup.style.display = 'none'">Отмена</button>
+    </div>
 </div>
 </body>
 </html>

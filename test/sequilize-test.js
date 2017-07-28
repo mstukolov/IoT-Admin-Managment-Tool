@@ -51,13 +51,39 @@ const Accessroles = sequelize.define('Accessroles', {
         }
     }
 });
-Accessroles.findAll().then(accessroles => {
+const Devicetrans = sequelize.define('Devicetrans', {
+    id:{type:DataTypes.BIGINT, primaryKey: true},
+    devid: DataTypes.STRING,
+    nparam1: DataTypes.DECIMAL,
+    nparam2: DataTypes.DECIMAL,
+    nparam3: DataTypes.DECIMAL,
+    nparam4: DataTypes.DECIMAL,
+    nparam5: DataTypes.DECIMAL,
+    tparam1: DataTypes.STRING,
+    tparam2: DataTypes.STRING
+}, {
+    classMethods: {
+        associate: function(models) {
+            // associations can be defined here
+        }
+    }
+});
+
+Devicetrans.create(
+    {
+        devid: 'smcool001',
+        nparam1: 10,
+        tparam1: 'true',
+    }
+    ).then(entity => {console.log(entity.get({plain: true }))})
+
+/*Accessroles.findAll().then(accessroles => {
  console.log(accessroles)
  })
 Users.belongsTo(Organizations, {as: 'org'});
 Organizations.findAll().then(organizations => {
     console.log(organizations)
-})
+})*/
 
 /*Users.findAll(
 

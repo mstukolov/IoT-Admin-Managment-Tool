@@ -1,6 +1,12 @@
 /**
  * Created by MAKS on 18.07.2017.
  */
+window.onload = function () {
+
+    $("[readonly]").dblclick(function () {
+        this.readOnly = false;
+    });
+}
 function findTableRows(tableId, inputTextId) {
     // Declare variables
     var input, filter, table, tr, td, i;
@@ -30,9 +36,8 @@ $(document).on("dblclick", ".lookup-row", function () {
 
 function saveReference(_lookup, _recId, _refRecId) {
     var request;
-    if(_lookup == 'lookupOrgTable'){
-        request = '/updateUser?recid=' + _recId + '&orgid=' + _refRecId;
-    }
+    if(_lookup == 'lookupOrgTable'){request = '/updateUser?recid=' + _recId + '&orgid=' + _refRecId;}
+    if(_lookup == 'lookupRolesTable'){request = '/updateUser?recid=' + _recId + '&roleid=' + _refRecId;}
     console.info(request);
     $.get(request, function(data, status){
         window.location.reload(false)

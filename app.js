@@ -13,6 +13,7 @@ const app = express();
 const organization = require(__dirname + '/server/controllers/orgController');
 const usersController = require(__dirname + '/server/controllers/usersController');
 const accessrolesController = require(__dirname + '/server/controllers/accessrolesController');
+const devicetransController = require(__dirname + '/server/controllers/devicetransController');
 
 // Log requests to the console.
 app.use(logger('dev'));
@@ -39,7 +40,7 @@ app.get('/users', function (req, res, next) {
     usersController.listJoinRef(req, res)
 });
 app.get('/roles', function (req, res, next) {
-    res.render('roles')
+    accessrolesController.list(req, res)
 });
 app.get('/roots', function (req, res, next) {
     res.render('roots')
@@ -100,13 +101,14 @@ app.get('/findRole', function (req, res, next) {
 });
 
 app.get('/getRoles', function (req, res, next) {
-    accessrolesController.list(req, res)
+    accessrolesController.listJson(req, res)
 });
-/*
-app.get('/getLookupRoles', function (req, res, next) {
-    accessrolesController.listRaw(req, res)
+//---------------Routing for Device Trans Table--------------------------------------
+app.get('/createDeviceTransaction', function (req, res, next) {
+    devicetransController.create(req, res)
 });
-*/
-
+app.get('/getAllDeviceTransactions', function (req, res, next) {
+    devicetransController.listJson(req, res)
+});
 //-------------------------------------------------
 module.exports = app;

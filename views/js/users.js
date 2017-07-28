@@ -37,10 +37,9 @@ window.onload = function () {
             $(".modal-body #userId").val( userId );
         });
 
-        //Блок кода для запроса существующих орагнизаций для привязки в лукапе
+        //Блок кода для запроса существующих организаций для привязки в лукапе
         var organizationLookup = document.getElementById('organizationLookup');
-        $(document).on("click", ".lookupUsers", function () {
-            console.log('Нажата кнопка лукапа:' + this.id)
+        $(document).on("click", ".lookupOrgs", function () {
             organizationLookup.style.display = "block";
             document.getElementById("recId").innerHTML = this.id;
             $.ajax({
@@ -60,7 +59,27 @@ window.onload = function () {
             });
 
         });
+    //Блок кода для запроса существующих ролей для привязки в лукапе
+    var rolesLookup = document.getElementById('rolesLookup');
+    $(document).on("click", ".lookupRoles", function () {
+        rolesLookup.style.display = "block";
+        document.getElementById("recId").innerHTML = this.id;
+        $.ajax({
+         type: 'GET',
+         url: '/getRoles',
+         success: function(result) {
 
+             $('#lookupRolesTable tr:not(:first)').remove();
+                 for (var index = 0; index< result.length; index++) {
+                     var row = $('<tr id="'+ result[index].id +'" class="lookup-row">' +
+                     '<td><output type="text" id="type_' + result[index].id + '" style="font-size: larger">'+ result[index].id +'</output></td>' +
+                     '<td><output type="text" id="name_' + result[index].id + '" style="font-size: larger">'+ result[index].role +'</output></td>' +
+                     '</tr>');
+                     $("#lookupRolesTable").append(row);
+                 }
+         }
+         });
+    });
         // When the user clicks on <span> (x), close the modal
         var span = document.getElementsByClassName("close")[0];
         span.onclick = function() {
@@ -68,11 +87,11 @@ window.onload = function () {
         }
 
         // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == organizationLookup) {
-                    organizationLookup.style.display = "none";
-                }
-            }
+        window.onclick = function(event) {
+            if (event.target == organizationLookup) {
+                organizationLookup.style.display = "none";}
+        }
+
     }
 
 

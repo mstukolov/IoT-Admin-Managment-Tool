@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <script src="js/data-grid.js"></script>
+    <script src="js/roles.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -26,7 +27,36 @@
         </ul>
     </div>
 </nav>
-This is ROLES form
+</nav>
+<form name = "create" id="createForm" action="/createRole" method = "GET">
+    <button id = "newThread" class="btn btn-primary" type="submit">Создать</button>
+</form>
+<br/>
+<table  id="dataTable" class="datatable table table-bordered">
+    <tr>
+        <th width="50px">No</th>
+        <th>Роль</th>
+        <th>Удаление</th>
+
+    </tr>
+    <% if(data.length){
+    for(var i = 0;i < data.length;i++) { %>
+    <tr id="<%=data[i].id%>" class="bg-info">
+        <td><%=data[i].id%></td>
+        <td>
+            <input id="role_<%=data[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=data[i].role%>">
+        </td>
+        <td>
+            <a href="/deleteRole?id=<%=data[i].id%>">Удалить</a>
+        </td>
+    </tr>
+    <% }
+    }else{ %>
+    <tr>
+        <td colspan="3">No data</td>
+    </tr>
+    <% } %>
+</table>
 
 </body>
 </html>
