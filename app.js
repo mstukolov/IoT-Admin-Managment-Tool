@@ -14,6 +14,7 @@ const organization = require(__dirname + '/server/controllers/orgController');
 const usersController = require(__dirname + '/server/controllers/usersController');
 const accessrolesController = require(__dirname + '/server/controllers/accessrolesController');
 const devicetransController = require(__dirname + '/server/controllers/devicetransController');
+const deviceController = require(__dirname + '/server/controllers/deviceController');
 
 // Log requests to the console.
 app.use(logger('dev'));
@@ -44,6 +45,9 @@ app.get('/roles', function (req, res, next) {
 });
 app.get('/roots', function (req, res, next) {
     res.render('roots')
+});
+app.get('/devices', function (req, res, next) {
+    deviceController.list(req, res)
 });
 //---------------Routing for Organization Controller--------------------------------------
 app.get('/createNewOrganization', function (req, res, next) {

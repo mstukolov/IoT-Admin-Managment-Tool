@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title>TEST HTML</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/data-grid.js"></script>
+    <script src="js/roles.js"></script>
+    </head>
+    <body>
+    <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+    <div class="navbar-header">
+    <a class="navbar-brand" href="#">C2M Admin Panel</a>
+</div>
+<ul class="nav navbar-nav">
+    <li><a href="/organizations">Организации</a></li>
+    <li><a href="/users">Пользователи</a></li>
+    <li><a href="/roles">Роли</a></li>
+    <li><a href="/roots">Права доступа</a></li>
+    <li class="active"><a href="/devices">Устройства</a></li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul>
+    </div>
+    </nav>
+    </nav>
+    <form name = "create" id="createForm" action="/createRole" method = "GET">
+    <button id = "newThread" class="btn btn-primary" type="submit">Создать</button>
+    </form>
+    <br/>
+    <table  id="dataTable" class="datatable table table-bordered">
+    <tr>
+    <th width="50px">No</th>
+    <th>Роль</th>
+    <th>Удаление</th>
+
+    </tr>
+    <% if(data.length){
+    for(var i = 0;i < data.length;i++) { %>
+    <tr id="<%=data[i].id%>" class="bg-info">
+        <td><%=data[i].id%></td>
+            <td>
+            <input id="role_<%=data[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=data[i].devid%>">
+            </td>
+            <td>
+            <a href="/deleteRole?id=<%=data[i].id%>">Удалить</a>
+            </td>
+            </tr>
+            <% }
+}else{ %>
+<tr>
+    <td colspan="3">No data</td>
+    </tr>
+    <% } %>
+</table>
+
+</body>
+</html>
