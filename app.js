@@ -49,6 +49,9 @@ app.get('/roots', function (req, res, next) {
 app.get('/devices', function (req, res, next) {
     deviceController.list(req, res)
 });
+app.get('/device-details', function (req, res, next) {
+    deviceController.details(req, res)
+});
 //---------------Routing for Organization Controller--------------------------------------
 app.get('/createNewOrganization', function (req, res, next) {
     organization.create(req, res)
@@ -113,6 +116,16 @@ app.get('/createDeviceTransaction', function (req, res, next) {
 });
 app.get('/getAllDeviceTransactions', function (req, res, next) {
     devicetransController.listJson(req, res)
+});
+//---------------Routing for Device Table--------------------------------------
+app.post('/updateDevice', function (req, res, next) {
+    deviceController.update(req, res)
+});
+app.post('/updateDeviceOrganization', function (req, res, next) {
+    deviceController.updateOrganization(req, res)
+});
+app.post('/deleteDevice', function (req, res, next) {
+    deviceController.destroy(req, res)
 });
 //-------------------------------------------------
 module.exports = app;

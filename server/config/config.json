@@ -8,11 +8,11 @@
     "dialect": "mysql"
   },
   "development": {
-    "username": "root",
-    "password": "java",
-    "database": "smartcooler",
-    "host": "127.0.0.1",
-    "port": 3306,
+    "username": "admin",
+    "password": "WWKUREVGEVZMIMPG",
+    "database": "compose",
+    "host": "sl-us-south-1-portal.0.dblayer.com",
+    "port": 19127,
     "dialect": "mysql"
   },
   "production": {

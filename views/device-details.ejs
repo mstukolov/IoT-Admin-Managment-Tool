@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>TEST HTML</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript"></script>
+        <script src="js/device-details.js"></script>
+
+    </head>
+
+    <body>
+    <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+    <div class="navbar-header">
+    <a class="navbar-brand" href="#">C2M Admin Panel</a>
+    </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/organizations">Организации</a></li>
+            <li><a href="/users">Пользователи</a></li>
+            <li><a href="/roles">Роли</a></li>
+            <li><a href="/roots">Права доступа</a></li>
+            <li class="active"><a href="/devices">Устройства</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+    </div>
+    </nav>
+    </nav>
+    <h3 style="padding: 25px;"> Параметры устройства: <%=data.devid%></h3>
+
+    <div class="row" style="padding-left: 25px;" >
+        <div class="col-lg-4">
+            <div>
+                <%if (statusMessage != ''){%>
+                <div class="alert <%=statusEvent%>"> <strong>Сообщение:</strong> <%=statusMessage%></div><% }%>
+                <form method="POST" action="/updateDevice">
+                <div class="form-group">
+                    <label for="id">Код устройства устройства:</label>
+                    <input type="text" class="form-control" id="id" name="id" value="<%=data.id%>" readonly="readonly">
+
+                    <label for="devid">Идентификатор устройства:</label>
+                    <input type="text" class="form-control" id="devid" name="devid" value="<%=data.devid%>" readonly="readonly">
+
+                    <label for="orgid">Организация:</label>
+                    <div class="form-inline">
+                        <input type="text" class="form-control" id="orgid" name="orgid" value="<%=data.org.organization%>" style="width: 94%">
+                        <input type="button" value="..." id="lookupOrgBtn_<%=data.id%>" class="lookupOrgs">
+                    </div>
+                    <label for="devtype">Тип устройства:</label>
+                    <input type="text" class="form-control" id="devtype" name="devtype" value="<%=data.devtype%>" readonly="readonly">
+
+                    <label for="devtype">Количество на складе:</label>
+                    <input type="text" class="form-control" id="qty" name="qty" value="<%=data.qtyBottle%>" readonly="readonly">
+                </div>
+                <div class="form-group">
+                    <label for="email">Группа рассылки:</label>
+                    <textarea class="form-control" id="email" name="email"><%=data.email%></textarea>
+
+                    <label for="name">Название:</label>
+                    <input type="text" class="form-control" id="name" name="name" value="<%=data.name%>"/>
+                    <label for="address">Адрес:</label>
+                    <input type="text" class="form-control" id="address" name="address" value="<%=data.address%>"/>
+
+                    <label for="lng">Широта:</label>
+                    <input type="text" class="form-control" id="lng" name="lng" value="<%=data.lng%>"/>
+                    <label for="ltd">Долгота:</label>
+                    <input type="text" class="form-control" id="ltd" name="ltd" value="<%=data.ltd%>"/>
+
+                    <label for="addhour">Часовой пояс:</label>
+                    <input type="text" class="form-control" id="addhour" name="addhour" value="<%=data.addhour%>"/>
+                </div>
+                <button type="submit" class="btn btn-default">Сохранить</button>
+            </form>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <div id="YMapsID" style="width:100%;height:350px" ></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- The Modal -->
+    <div id="organizationLookup" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content" style="width:850px;">
+            <span class="close">&times;</span>
+            <h3>Выбор организации</h3>
+            Пользователь:<span name="recId" id="recId"></span>
+            <br/>
+            <input type="text" class="form-control" id="findInput" onkeyup="findTableRows('lookupOrgTable', this.id)" placeholder="Search for orgs..">
+            <table class="table table-bordered table-hover table-striped" id="lookupOrgTable">
+                <thead>
+                <tr id="row00" class="bg-info">
+                    <th>No</th>
+                    <th>Организация</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-default" onclick="organizationLookup.style.display = 'none'">Отмена</button>
+        </div>
+    </div>
+</body>
+</html>

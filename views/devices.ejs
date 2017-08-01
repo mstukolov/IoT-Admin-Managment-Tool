@@ -6,8 +6,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="js/data-grid.js"></script>
-    <script src="js/roles.js"></script>
+
     </head>
     <body>
     <nav class="navbar navbar-inverse">
@@ -36,19 +35,34 @@
     <table  id="dataTable" class="datatable table table-bordered">
     <tr>
     <th width="50px">No</th>
-    <th>Роль</th>
+    <th>Идентификатор устройства</th>
+    <th>Организация</th>
+    <th>Название</th>
+    <th>Тип устройства</th>
     <th>Удаление</th>
 
     </tr>
     <% if(data.length){
     for(var i = 0;i < data.length;i++) { %>
     <tr id="<%=data[i].id%>" class="bg-info">
-        <td><%=data[i].id%></td>
+            <td>
+                <a href="/device-details?id=<%=data[i].id%>"><%=data[i].id%></a>
+            </td>
             <td>
             <input id="role_<%=data[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=data[i].devid%>">
             </td>
             <td>
-            <a href="/deleteRole?id=<%=data[i].id%>">Удалить</a>
+                <input id="orgid_<%=data[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=data[i].org.organization%>">
+            </td>
+            <td>
+                <input id="name_<%=data[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=data[i].name%>">
+            </td>
+            <td>
+                <input id="devtype_<%=data[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=data[i].devtype%>">
+            </td>
+
+            <td>
+                <a href="/deleteRole?id=<%=data[i].id%>">Удалить</a>
             </td>
             </tr>
             <% }
