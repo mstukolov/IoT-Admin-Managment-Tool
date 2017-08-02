@@ -121,11 +121,14 @@ app.get('/getAllDeviceTransactions', function (req, res, next) {
 app.post('/updateDevice', function (req, res, next) {
     deviceController.update(req, res)
 });
-app.post('/updateDeviceOrganization', function (req, res, next) {
-    deviceController.updateOrganization(req, res)
-});
-app.post('/deleteDevice', function (req, res, next) {
+app.get('/deleteDevice', function (req, res, next) {
     deviceController.destroy(req, res)
+});
+app.get('/createDevice', function (req, res, next) {
+    deviceController.create(req, res)
+});
+app.get('/getDevice', function (req, res, next) {
+    deviceController.retrieve(req, res)
 });
 //-------------------------------------------------
 module.exports = app;

@@ -43,7 +43,9 @@
     <% if(data.length){
     for(var i = 0;i < data.length;i++) { %>
     <tr id="<%=data[i].id%>" class="bg-info">
-        <td><%=data[i].id%></td>
+        <td>
+            <a href="/role-details?id=<%=data[i].id%>"><%=data[i].id%></a>
+        </td>
         <td>
             <input id="role_<%=data[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=data[i].role%>">
         </td>

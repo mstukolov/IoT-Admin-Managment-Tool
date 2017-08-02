@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <meta charset="UTF-8">
-    <title>TEST HTML</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <meta charset="UTF-8">
+        <title>TEST HTML</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="js/devices.js"></script>
 
     </head>
     <body>
@@ -28,24 +29,25 @@
     </div>
     </nav>
     </nav>
-    <form name = "create" id="createForm" action="/createRole" method = "GET">
-    <button id = "newThread" class="btn btn-primary" type="submit">Создать</button>
+    <form name = "create" id="createForm" action="/createDevice" method = "GET">
+        <button id = "createBtn" class="btn btn-primary" type="submit">Создать</button>
     </form>
     <br/>
-    <table  id="dataTable" class="datatable table table-bordered">
-    <tr>
-    <th width="50px">No</th>
-    <th>Идентификатор устройства</th>
-    <th>Организация</th>
-    <th>Название</th>
-    <th>Тип устройства</th>
-    <th>Удаление</th>
 
-    </tr>
+    <input type="text" class="form-control" id="findDevice" onkeyup="findTableRows('dataTable', this.id)" placeholder="Search for devices..">
+    <table  id="dataTable" class="datatable table table-bordered table-striped">
+        <tr style="height: 50px">
+            <th width="100px">No</th>
+            <th>Идентификатор устройства</th>
+            <th>Организация</th>
+            <th>Название</th>
+            <th>Тип устройства</th>
+            <th>Удаление</th>
+        </tr>
     <% if(data.length){
     for(var i = 0;i < data.length;i++) { %>
     <tr id="<%=data[i].id%>" class="bg-info">
-            <td>
+            <td width="100px">
                 <a href="/device-details?id=<%=data[i].id%>"><%=data[i].id%></a>
             </td>
             <td>
@@ -62,7 +64,7 @@
             </td>
 
             <td>
-                <a href="/deleteRole?id=<%=data[i].id%>">Удалить</a>
+                <a href="/deleteDevice?id=<%=data[i].id%>">Удалить</a>
             </td>
             </tr>
             <% }

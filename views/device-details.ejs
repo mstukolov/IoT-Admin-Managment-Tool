@@ -48,14 +48,24 @@
 
                     <label for="orgid">Организация:</label>
                     <div class="form-inline">
-                        <input type="text" class="form-control" id="orgid" name="orgid" value="<%=data.org.organization%>" style="width: 94%">
+                        <input type="text" class="form-control hidden" id="orgid" name="orgid" value="<%=data.orgid%>" style="width: 94%">
+                        <input type="text" class="form-control" id="orgname" name="orgname" readonly="readonly" style="width: 94%">
                         <input type="button" value="..." id="lookupOrgBtn_<%=data.id%>" class="lookupOrgs">
                     </div>
-                    <label for="devtype">Тип устройства:</label>
-                    <input type="text" class="form-control" id="devtype" name="devtype" value="<%=data.devtype%>" readonly="readonly">
 
-                    <label for="devtype">Количество на складе:</label>
-                    <input type="text" class="form-control" id="qty" name="qty" value="<%=data.qtyBottle%>" readonly="readonly">
+                    <label for="devtype">Тип устройства:</label>
+
+                    <select class="form-control" id="devtype" name="devtype">
+                        <option>SmartCooler</option>
+                        <option>SmartFreeze</option>
+                        <option>stm32test</option>
+                        <option>Pyexp</option>
+                        <option>BMP180</option>
+                        <option>YL38</option>
+                    </select>
+
+                    <label for="qty">Количество на складе:</label>
+                    <input type="text" class="form-control" id="qty" name="qty" value="<%=data.qtyBottle%>">
                 </div>
                 <div class="form-group">
                     <label for="email">Группа рассылки:</label>
@@ -63,9 +73,13 @@
 
                     <label for="name">Название:</label>
                     <input type="text" class="form-control" id="name" name="name" value="<%=data.name%>"/>
-                    <label for="address">Адрес:</label>
-                    <input type="text" class="form-control" id="address" name="address" value="<%=data.address%>"/>
 
+                    <label for="address">Адрес:</label>
+                    <div class="form-check form-inline">
+                        <input type="text" class="form-control" id="address" name="address" value="<%=data.address%>" style="width: 85%"/>
+                        <input type="button" value="Проверка" id="checkAddress" class="checkAddress">
+                    </div>
+                    <br>
                     <label for="lng">Широта:</label>
                     <input type="text" class="form-control" id="lng" name="lng" value="<%=data.lng%>"/>
                     <label for="ltd">Долгота:</label>
@@ -80,7 +94,7 @@
         </div>
         <div class="col-lg-4">
             <div class="form-group">
-                <div id="YMapsID" style="width:100%;height:350px" ></div>
+                <div id="YMapsID" style="width:100%;height:550px" ></div>
             </div>
         </div>
     </div>

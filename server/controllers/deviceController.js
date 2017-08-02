@@ -4,6 +4,18 @@
 /**
  * Created by MAKS on 06.07.2017.
  */
+//Инициализация IOT-сервиса
+var ibmiotf = require("ibmiotf");
+var config = {
+    "org" : 'kwxqcy',
+    "id" : 'a-kwxqcy-app6666777777',
+    "domain": "internetofthings.ibmcloud.com",
+    "auth-key" : 'a-kwxqcy-1dw7hvzvwk',
+    "auth-token" : 'tsM8N(FS@iOc3CId+5'
+}
+var ibmiotfClient = new ibmiotf.IotfApplication(config);
+ibmiotfClient.connect();
+
 const Devices = require('../models').Devices;
 const Organizations = require('../models').Organizations;
 Devices.belongsTo(Organizations, {as: 'org'});
@@ -12,18 +24,27 @@ module.exports = {
     create(req, res) {
         return Devices
                 .create({
-                    orgid: req.query.organization || '',
-                    devid: req.query.devid || '',
-                    devtype: req.query.devtype || '',
-                    lng: req.query.lng || '',
-                    ltd: req.query.ltd || '',
+                    orgid: req.query.organization || 57,
+                    devid: req.query.devid || 'SmartCooler',
+                    devtype: req.query.devtype || 'SmartCooler',
+                    lng: req.query.lng || 0,
+                    ltd: req.query.ltd || 0,
                     email: req.query.email || '',
-                    qtyBottle: req.query.qtyBottle || '',
+                    qtyBottle: req.query.qtyBottle || 0,
                     name: req.query.name || '',
                     addhour: req.query.addhour || '',
                     address: req.query.address || ''
                 })
-                .then(res.redirect('/devices'))
+                .then(device => {
+                    device['devid'] = device.devid + device.id;
+                    ibmiotfClient.registerDevice(device.devtype, device.devid,"12345678").then (function onSuccess (argument) {
+                        console.log("Success"); console.log(argument);
+                        res.render('device-details',{data: device, statusMessage : 'Устройство создано', statusEvent: 'alert-success' })
+                        }, function onError (argument) {
+                        console.log("Fail"); console.log(argument.data);
+                    })
+                    /*res.render('device-details',{data: device, statusMessage : 'Устройство создано', statusEvent: 'alert-success' })*/
+                })
                 .catch(error => res.status(400).send(error));
     },
     update(req, res) {
@@ -31,7 +52,7 @@ module.exports = {
                 .findById(req.body.id)
                 .then(device => {if (!device) { return res.status(404).send({message: 'device Not Found',});}
                     return device.update({
-                            orgid: device.orgid,
+                            orgid: req.body.orgid || device.orgid,
                             devid: req.body.devid || device.devid,
                             devtype: req.body.devtype || device.devtype,
                             lng: req.body.lng || device.lng,
@@ -41,15 +62,10 @@ module.exports = {
                             name: req.body.name || device.name,
                             addhour: req.body.addhour || device.addhour,
                             address: req.body.address || device.address})
-                        .then(res.status(200).render('device-details',{data: device, statusMessage : 'Успешно сохранено', statusEvent: 'alert-success' }))
+                        .then(res.render('device-details',{data: device, statusMessage : 'Успешно сохранено', statusEvent: 'alert-success' }))
                         .catch((error) => res.status(400).send(error));})
+                        //.then(res.redirect('\device-details?id='+req.body.id))
                         .catch((error) => res.status(400).send(error));
-    },
-    updateOrganization(req, res) {
-        return Devices.findById(req.body.id).then(device => {if (!device) { return res.status(404).send({message: 'device Not Found',});}
-            return device.update({
-                orgid: req.body.orgid || device.orgid
-            }).then(res.status(200).redirect('devices')) .catch((error) => res.status(400).send(error));}).catch((error) => res.status(400).send(error));
     },
     list(req, res) {
         return Devices
@@ -66,7 +82,7 @@ module.exports = {
                 .findById(req.query.id)
                 .then(device =>
             {if (!device) { return res.status(404).send({message: 'device Not Found',});}
-        return res.status(200).send(device);
+                return res.status(200).send(device);
     })
     .catch(error => res.status(400).send(error));
     },
@@ -83,19 +99,14 @@ module.exports = {
     .catch(error => res.status(400).send(error));
     },
     destroy(req, res) {
-        return Devices
-                .findById(req.query.id)
-                .then(device => {
-                if (!device) {
-            return res.status(400).send({
-                message: 'device Not Found',
-            });
-        }
+        return Devices.findById(req.query.id).then(device => {if (!device) {return res.status(400).send({message: 'device Not Found'});}
         return device
                 .destroy()
-                .then(res.redirect('/devices'))
+                .then(
+                    ibmiotfClient.unregisterDevice(device.devtype, device.devid).
+                    then (function onSuccess (response) {res.redirect('/devices')},
+                            function onError (argument) {console.log("Fail");console.log(argument)}))
+                .catch(error => res.status(400).send(error));})
                 .catch(error => res.status(400).send(error));
-    })
-    .catch(error => res.status(400).send(error));
     }
 };

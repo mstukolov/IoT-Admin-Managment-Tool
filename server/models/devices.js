@@ -4,7 +4,7 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
     var Devices = sequelize.define('Devices', {
-        id:{type:DataTypes.BIGINT, primaryKey: true},
+        id:{type:DataTypes.BIGINT, primaryKey: true,autoIncrement: true},
         orgid: DataTypes.STRING,
         devid: DataTypes.STRING,
         devtype: DataTypes.STRING,

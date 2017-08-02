@@ -9,10 +9,9 @@ window.onload = function () {
     // Устанавливает начальные параметры отображения карты: центр карты и коэффициент масштабирования
     map.setCenter(new YMaps.GeoPoint(37.64, 55.76), 10);
     map.enableScrollZoom()
-    /* var myEventListener = YMaps.Events.observe(map, map.Events.Click, function (map, mEvent) {
-     var placemark = new YMaps.Placemark(mEvent.getGeoPoint());
-     map.addOverlay(placemark);
-     }, this);*/
+    var placemark = new YMaps.Placemark(new YMaps.GeoPoint(document.getElementById('lng').value,document.getElementById('ltd').value));
+    map.addOverlay(placemark);
+
 
     //Блок кода для запроса существующих организаций для привязки в лукапе
     var organizationLookup = document.getElementById('organizationLookup');
@@ -49,15 +48,44 @@ window.onload = function () {
     }
     //Выбор организации по двойному клику в лукапе
     $(document).on("dblclick", ".lookup-row", function () {
-       /* var _devid = (document.getElementById("recId").innerHTML).substr(13,18)
-        var request = '/updateDevice?id=' + _devid + '&orgid=' + this.id;
-        console.log(request)*/
-        $.post('/updateDeviceOrganization',{id: (document.getElementById("recId").innerHTML).substr(13,18), orgid: this.id},
-            function(data, status){
-            window.location.reload(false)
-            }
-        );
-        //organizationLookup.style.display = "none";
+        console.log('Нажата строка: ' + this.id + ', ' + document.getElementById('name_' + this.id).innerHTML)
+        document.getElementById('orgid').value = this.id;
+        document.getElementById('orgname').value = document.getElementById('name_' + this.id).innerHTML;
+        organizationLookup.style.display = "none";
+    });
+
+    $.ajax({
+        type: 'GET',
+        url: '/findOrganization',
+        data:{orgId: document.getElementById('orgid').value},
+        success: function(result) {
+            document.getElementById('orgname').value = result.organization
+        }
+    });
+
+    $.ajax({
+        type: 'GET',
+        url: '/getDevice',
+        data:{id: document.getElementById('id').value},
+        success: function(result) {
+            var element = document.getElementById('devtype');
+            element.value = result.devtype
+        }
+    });
+
+
+    $(document).on("click", ".checkAddress", function () {
+        var url= 'https://geocode-maps.yandex.ru/1.x/?format=json&geocode=' + encodeURI(document.getElementById('address').value)
+        console.log(url)
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", url, false ); // false for synchronous request
+        xmlHttp.send( null );
+
+        if(JSON.parse(xmlHttp.responseText).response.GeoObjectCollection.featureMember[0] != undefined){
+            var point = JSON.parse(xmlHttp.responseText).response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
+            document.getElementById('lng').value = point.substring(0,9)
+            document.getElementById('ltd').value = point.substring(10,21)
+        }else{alert('Адрес не найден')}
     });
 
 };
