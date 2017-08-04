@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TEST HTML</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/available-monitor.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/c2mUI.css">
+
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">C2M Admin Panel</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/organizations">Организации</a></li>
+            <li><a href="/users">Пользователи</a></li>
+            <li><a href="/roles">Роли</a></li>
+            <li><a href="/devices">Устройства</a></li>
+            <li class="active"><a href="/available-monitor">Доступность</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+    </div>
+</nav>
+</nav>
+<h2>Мониторинг доступности устройств</h2>
+<div class="row" style="padding-left: 25px;" >
+    <div class="col-lg-4">
+        <table  id="dataTable" class="datatable table table-bordered table-striped">
+            <tr style="height: 50px">
+                <th width="100px">No</th>
+                <th>Значение</th>
+                <th>Время сообщения</th>
+            </tr>
+            <% if(data.length){
+            for(var i = 0;i < data.length;i++) { %>
+            <tr id="<%=data[i].id%>" class="bg-info">
+                <td width="100px">
+                    <%=data[i].devid%>
+                </td>
+                <td width="100px">
+                    <%=data[i].nparam1%>
+                </td>
+                <td width="100px">
+                    <%=data[i].createdAt%>
+                </td>
+            </tr>
+            <% }
+            }else{ %>
+            <tr>
+                <td colspan="3">No data</td>
+            </tr>
+            <% } %>
+        </table>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+            <div id="YMapsID" style="width:100%;height:550px" ></div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

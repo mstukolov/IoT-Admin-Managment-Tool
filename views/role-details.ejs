@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TEST HTML</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript"></script>
+    <script src="js/role-details.js"></script>
+
+</head>
+
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">C2M Admin Panel</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/organizations">Организации</a></li>
+            <li><a href="/users">Пользователи</a></li>
+            <li class="active"><a href="/roles">Роли</a></li>
+            <li><a href="/devices">Устройства</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+    </div>
+</nav>
+</nav>
+<h3 style="padding: 25px;"> Параметры Роли Доступа:
+    (<%=data[0].roleid%>)<%=data[0].role.role%>
+</h3>
+
+<input type="button" id="<%=data[0].roleid%>" value="Добавить Action" class="lookupActions btn btn-primary">
+<table  id="dataTable" class="datatable table table-bordered table-striped">
+    <tr style="height: 50px">
+        <th width="100px">No</th>
+        <th>Action</th>
+        <th>Object</th>
+        <th>Действие</th>
+    </tr>
+    <% if(data.length){
+    for(var i = 0;i < data.length;i++) { %>
+    <tr id="<%=data[i].id%>" class="bg-info">
+        <td width="100px">
+          <%=data[i].id%>
+        </td>
+        <td>
+            <%=data[i].action.action%>
+        </td>
+        <td>
+            <%=data[i].action.object%>
+        </td>
+        <td>
+            <a href="/deleteActionRoles?refid=<%=data[i].id%>">Удалить</a>
+        </td>
+    </tr>
+    <% }
+    }else{ %>
+    <tr>
+        <td colspan="3">No data</td>
+    </tr>
+    <% } %>
+</table>
+<div id="actionLookup" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content" style="width:850px;">
+        <span class="close">&times;</span>
+        <h3>Выбрать actions</h3>
+        <span name="parentid" id="parentid" class="hidden"></span>
+        <table class="table table-bordered table-hover table-striped" id="lookupActionTable">
+            <thead>
+            <tr id="row00" class="bg-info">
+                <th>No</th>
+                <th>Action</th>
+                <th>Object</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-default" onclick="actionLookup.style.display = 'none'">Отмена</button>
+    </div>
+</div>
+
+</body>
+</html>

@@ -8,7 +8,7 @@ module.exports = {
         return Organizations
                 .create({
                     organization: req.query.organization,
-                    domen: 0,
+                    parent: '',
                     active: false
                 })
         .then(res.redirect('/organizations'))
@@ -25,10 +25,16 @@ module.exports = {
                     return organization
                     .update({
                         organization: req.query.name || organization.organization,
-                        domen: req.query.domen || organization.domen,
+                        parent: req.query.parent || organization.parent,
                         active: req.query.active || organization.active,
+                        inventQty: req.query.inventQty || organization.inventQty,
+                        agreement: req.query.agreement || organization.agreement,
+                        agreementDate: req.query.agreementDate || organization.agreementDate,
+                        email: req.query.email || organization.email,
+                        phone: req.query.phone || organization.phone,
+                        contact: req.query.contact || organization.contact
                     })
-                    .then(res.redirect('/organizations'))
+                    .then(res.render('organization-details',{data: organization, statusMessage : 'Успешно сохранено', statusEvent: 'alert-success' }))
                     .catch((error) => res.status(400).send(error));
                 })
                 .catch((error) => res.status(400).send(error));
@@ -43,18 +49,22 @@ module.exports = {
         return Organizations
                 .all()
                 .then(list => res.status(200).send(list))
-    .catch(error => res.status(400).send(error));
+                .catch(error => res.status(400).send(error));
     },
     retrieve(req, res) {
         return Organizations
                 .findById(req.query.orgId)
                 .then(organization => {
-                if (!organization) {
-            return res.status(404).send({
-                message: 'Todo Not Found',
-            });
-        }
-        return res.status(200).send(organization);
+                if (!organization) {return res.status(404).send({message: 'Todo Not Found',});}
+                return res.status(200).send(organization)})
+                .catch(error => res.status(400).send(error));}
+    ,
+    details(req, res) {
+        return Organizations
+                .findById(req.query.orgId)
+                .then(organization =>
+            {if (!organization) { return res.status(404).send({message: 'device Not Found',})}
+        return res.status(200).render('organization-details', {data : organization, statusMessage : '', statusEvent: '' });
     })
     .catch(error => res.status(400).send(error));
     },
@@ -72,6 +82,5 @@ module.exports = {
                 .then(res.redirect('/organizations'))
                 .catch(error => res.status(400).send(error));
                 })
-                .catch(error => res.status(400).send(error));
-                }
+                .catch(error => res.status(400).send(error))}
 };

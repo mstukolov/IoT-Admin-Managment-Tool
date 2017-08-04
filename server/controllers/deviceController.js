@@ -32,7 +32,7 @@ module.exports = {
                     email: req.query.email || '',
                     qtyBottle: req.query.qtyBottle || 0,
                     name: req.query.name || '',
-                    addhour: req.query.addhour || '',
+                    addhour: req.query.addhour || '+03:00',
                     address: req.query.address || ''
                 })
                 .then(device => {
@@ -43,7 +43,6 @@ module.exports = {
                         }, function onError (argument) {
                         console.log("Fail"); console.log(argument.data);
                     })
-                    /*res.render('device-details',{data: device, statusMessage : 'Устройство создано', statusEvent: 'alert-success' })*/
                 })
                 .catch(error => res.status(400).send(error));
     },
@@ -60,11 +59,10 @@ module.exports = {
                             email: req.body.email || device.email,
                             qtyBottle: req.body.qtyBottle || device.qtyBottle,
                             name: req.body.name || device.name,
-                            addhour: req.body.addhour || device.addhour,
+                            addhour: req.body.addhour || '+03:00',
                             address: req.body.address || device.address})
                         .then(res.render('device-details',{data: device, statusMessage : 'Успешно сохранено', statusEvent: 'alert-success' }))
                         .catch((error) => res.status(400).send(error));})
-                        //.then(res.redirect('\device-details?id='+req.body.id))
                         .catch((error) => res.status(400).send(error));
     },
     list(req, res) {

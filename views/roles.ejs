@@ -19,8 +19,8 @@
             <li><a href="/organizations">Организации</a></li>
             <li><a href="/users">Пользователи</a></li>
             <li class="active"><a href="/roles">Роли</a></li>
-            <li><a href="/roots">Права доступа</a></li>
             <li><a href="/devices">Устройства</a></li>
+            <li><a href="/available-monitor">Мониторинг</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -44,7 +44,7 @@
     for(var i = 0;i < data.length;i++) { %>
     <tr id="<%=data[i].id%>" class="bg-info">
         <td>
-            <a href="/role-details?id=<%=data[i].id%>"><%=data[i].id%></a>
+            <a href="/role-details?roleid=<%=data[i].id%>"><%=data[i].id%></a>
         </td>
         <td>
             <input id="role_<%=data[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=data[i].role%>">

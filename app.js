@@ -2,6 +2,7 @@
  * Created by MAKS on 06.07.2017.
  */
 'use strict'
+var request = require('request');
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
@@ -10,11 +11,13 @@ var path = require('path')
 // Set up the express app
 const app = express();
 
-const organization = require(__dirname + '/server/controllers/orgController');
+const organizationController = require(__dirname + '/server/controllers/orgController');
 const usersController = require(__dirname + '/server/controllers/usersController');
 const accessrolesController = require(__dirname + '/server/controllers/accessrolesController');
 const devicetransController = require(__dirname + '/server/controllers/devicetransController');
 const deviceController = require(__dirname + '/server/controllers/deviceController');
+const actionController = require(__dirname + '/server/controllers/actionController');
+const action_accessrolesController = require(__dirname + '/server/controllers/action_accessrolesController');
 
 // Log requests to the console.
 app.use(logger('dev'));
@@ -35,7 +38,7 @@ app.get('/', function(req, res) {
 
 //routing to main views
 app.get('/organizations', function (req, res, next) {
-    organization.list(req, res)
+    organizationController.list(req, res)
 });
 app.get('/users', function (req, res, next) {
     usersController.listJoinRef(req, res)
@@ -49,32 +52,48 @@ app.get('/roots', function (req, res, next) {
 app.get('/devices', function (req, res, next) {
     deviceController.list(req, res)
 });
+app.get('/available-monitor', function (req, res, next) {
+    request( {
+            url : "https://smartcoolerbackend.mybluemix.net/getlasttrans"
+        },function (error, response, body) {
+            res.render('available-monitor', {data: JSON.parse(body)})
+        });
+});
 app.get('/device-details', function (req, res, next) {
     deviceController.details(req, res)
 });
+app.get('/role-details', function (req, res, next) {
+    action_accessrolesController.findByRole(req, res)
+});
+app.get('/organization-details', function (req, res, next) {
+    organizationController.details(req, res)
+});
 //---------------Routing for Organization Controller--------------------------------------
 app.get('/createNewOrganization', function (req, res, next) {
-    organization.create(req, res)
+    organizationController.create(req, res)
 });
 app.get('/updateOrganization', function (req, res, next) {
-    organization.update(req, res)
+    organizationController.update(req, res)
+});
+app.get('/updateOrganization', function (req, res, next) {
+    organizationController.update(req, res)
 });
 app.get('/deleteOrganization', function (req, res, next) {
-    organization.destroy(req, res)
+    organizationController.destroy(req, res)
 });
 app.get('/findOrganization', function (req, res, next) {
-    organization.retrieve(req, res)
+    organizationController.retrieve(req, res)
 });
 
 app.get('/getAllOrganizations', function (req, res, next) {
-    organization.list(req, res)
+    organizationController.list(req, res)
 });
 app.get('/getLookupOrganizations', function (req, res, next) {
-    organization.listRaw(req, res)
+    organizationController.listRaw(req, res)
 });
 
 app.get('/blockOrganization', function (req, res, next) {
-    organization.update(req, res)
+    organizationController.update(req, res)
 });
 //------------Routing for userController---------------------
 app.get('/createUser', function (req, res, next) {
@@ -130,5 +149,26 @@ app.get('/createDevice', function (req, res, next) {
 app.get('/getDevice', function (req, res, next) {
     deviceController.retrieve(req, res)
 });
-//-------------------------------------------------
+//---------------Routing for Actions Table--------------------------------------
+app.get('/getActions', function (req, res, next) {
+    actionController.listJson(req, res)
+});
+//---------------Routing for Action_accessroles Table--------------------------------------
+app.get('/getAction_accessroles', function (req, res, next) {
+    action_accessrolesController.listJson(req, res)
+});
+app.get('/findActionsByRole', function (req, res, next) {
+    action_accessrolesController.findByRole(req, res)
+});
+app.get('/findActionsJson', function (req, res, next) {
+    action_accessrolesController.listJson(req, res)
+});
+app.get('/saveActionRoles', function (req, res, next) {
+    action_accessrolesController.create(req, res)
+});
+app.get('/deleteActionRoles', function (req, res, next) {
+    action_accessrolesController.destroy(req, res)
+});
+
+
 module.exports = app;

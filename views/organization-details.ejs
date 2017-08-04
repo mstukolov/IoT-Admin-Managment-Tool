@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TEST HTML</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/organization-details.js"></script>
+
+</head>
+
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">C2M Admin Panel</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/organizations">Организации</a></li>
+            <li><a href="/users">Пользователи</a></li>
+            <li><a href="/roles">Роли</a></li>
+            <li><a href="/devices">Устройства</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+    </div>
+</nav>
+</nav>
+<h3 style="padding: 25px;"> Настройки организации: <%=data.organization%></h3>
+<div class="row" style="padding-left: 25px;" >
+    <div class="col-lg-4">
+        <div>
+            <%if (statusMessage != ''){%>
+            <div class="alert <%=statusEvent%>"> <strong>Сообщение:</strong> <%=statusMessage%></div><% }%>
+            <form method="GET" action="/updateOrganization">
+                <div class="form-group">
+                    <label for="id">Код организации:</label>
+                    <input type="text" class="form-control" id="orgId" name="orgId" value="<%=data.id%>" readonly="readonly">
+
+                    <label for="id">Название организации:</label>
+                    <input type="text" class="form-control" id="name" name="name" value="<%=data.organization%>">
+
+                    <label for="parent">Головная орагнизация:</label>
+                    <input type="text" class="form-control" id="parent" name="parent" value="<%=data.parent%>" readonly="readonly">
+
+                    <label for="active">Активность:</label>
+                    <select class="form-control" id="active" name="active" value="<%=data.active%>">
+                        <option>Активный</option>
+                        <option>Блокирован</option>
+                        <option>Отключен</option>
+                    </select>
+
+                    <label for="inventQty">Количество на складе:</label>
+                    <input type="text" class="form-control" id="inventQty" name="inventQty" value="<%=data.inventQty%>">
+                </div>
+                <div>
+                    <label for="agreement">Договор №:</label>
+                    <input type="text" class="form-control" id="agreement" name="agreement" value="<%=data.agreement%>">
+
+                    <label for="agreementDate">Дата договора:</label>
+                    <input type="date" class="form-control" id="agreementDate" name="agreementDate" value="<%=data.agreementDate%>">
+
+
+                    <label for="email">Email:</label>
+                    <input type="text" class="form-control" id="email" name="email" value="<%=data.email%>">
+
+                    <label for="phone">Телефон:</label>
+                    <input type="text" class="form-control" id="phone" name="phone" value="<%=data.phone%>">
+
+                    <label for="contact">Контактное лицо:</label>
+                    <input type="text" class="form-control" id="contact" name="contact" value="<%=data.contact%>">
+
+                </div>
+                <br>
+                <button type="submit" class="btn btn-default">Сохранить</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

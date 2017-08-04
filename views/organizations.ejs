@@ -6,39 +6,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script>
-        window.onload = function () {
-            var theTbl = document.getElementById("dataTable").getElementsByTagName("tr");
-            for(var i=1;i<theTbl.length;i++)
-            {
-                if(theTbl[i].getElementsByTagName("td")[3].innerHTML == 'false'){
-                    theTbl[i].className  = 'bg-danger'
-                }else{
-                    theTbl[i].className  = 'bg-success'
-                }
-            }
-            var onChange = function(evt) {
-                var request;
-                if(this.id.match('name')){
-                    request = '/updateOrganization?orgId=' + (this.id).substr(5,6) + '&name=' + this.value;
-                }
-                if(this.id.match('domen')){
-                    request = '/updateOrganization?orgId=' + (this.id).substr(6,7) + '&domen=' + this.value;
-                }
-                console.info(request);
-                $.get(request, function(data, status){});
-            };
-            var inputs = document.getElementsByClassName('editable');
-            for(var i=0;i<inputs.length;i++){
-                inputs[i].addEventListener('input', onChange, false);
-            }
+    <script src="js/data-grid.js"></script>
+    <script src="js/organization.js"></script>
 
-            $("[readonly]").dblclick(
-                function(){
-                    this.readOnly = false;
-                });
-        }
-    </script>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -50,8 +20,8 @@
             <li class="active"><a href="/organizations">Организации</a></li>
             <li><a href="/users">Пользователи</a></li>
             <li><a href="/roles">Роли</a></li>
-            <li><a href="/roots">Права доступа</a></li>
             <li><a href="/devices">Устройства</a></li>
+            <li><a href="/available-monitor">Мониторинг</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -63,26 +33,32 @@
         <button id = "newThread" class="btn btn-primary" type="submit">Создать организацию</button>
     </form>
 <br/>
+<input type="text" class="form-control" id="findOrgsInput" onkeyup="findTableRows('dataTable', this.id)" placeholder="Search for organization..">
     <table  id="dataTable" class="datatable table table-bordered">
         <tr>
             <th width="50px">No</th>
             <th>Название</th>
-            <th>Домен</th>
+            <th>Головная организация</th>
             <th>Активен</th>
+            <th>Остаток</th>
             <th>Блокировать</th>
             <th>Разблокировать</th>
             <th>Удаление</th>
-
         </tr>
         <% if(orglist.length){
         for(var i = 0;i < orglist.length;i++) { %>
         <tr id="<%=orglist[i].id%>" class="bg-info">
-            <td><%=orglist[i].id%></td>
+            <td>
+                <a href="/organization-details?orgId=<%=orglist[i].id%>"><%=orglist[i].id%></a>
+            </td>
             <td>
                 <input id="name_<%=orglist[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=orglist[i].organization%>">
             </td>
-            <td><input type="text" readonly="readonly" id="domen_<%=orglist[i].id%>" class="form-control editable" value="<%=orglist[i].domen%>"></td>
+            <td><input type="text" readonly="readonly" id="parent_<%=orglist[i].id%>" class="form-control editable" value="<%=orglist[i].parent%>"></td>
             <td><%=orglist[i].active%></td>
+            <td>
+                <input id="qty<%=orglist[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=orglist[i].inventQty%>">
+            </td>
             <td>
                 <a href="/blockOrganization?orgId=<%=orglist[i].id%>&active=0">Заблокировать</a>
             </td>
