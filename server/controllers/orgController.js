@@ -8,7 +8,7 @@ module.exports = {
         return Organizations
                 .create({
                     organization: req.query.organization,
-                    parent: '',
+                    parent: 0,
                     active: false
                 })
         .then(res.redirect('/organizations'))

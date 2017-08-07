@@ -84,11 +84,21 @@ module.exports = {
     })
     .catch(error => res.status(400).send(error));
     },
+    findByName(req, res) {
+        return Devices
+                .findOne({
+                    where: {devid: req.query.devid}
+                })
+                .then(device => {if (!device) { return res.status(404).send({message: 'device Not Found',});}
+                        return res.status(200).send(device)}).catch(error => res.status(400).send(error));}
+    ,
     details(req, res) {
         return Devices
                 .findOne({
                     include: [{model: Organizations, as: 'org'}],
-                    where: {id: req.query.id}
+                    where: {
+                        $or:[{id: req.query.id}, {devid: req.query.devid}]
+                    }
                 })
                 .then(device =>
                     {if (!device) { return res.status(404).send({message: 'device Not Found',})}

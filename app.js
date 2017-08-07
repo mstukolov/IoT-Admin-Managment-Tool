@@ -7,6 +7,7 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 var path = require('path')
+var moment = require('moment');
 
 // Set up the express app
 const app = express();
@@ -19,6 +20,37 @@ const deviceController = require(__dirname + '/server/controllers/deviceControll
 const actionController = require(__dirname + '/server/controllers/actionController');
 const action_accessrolesController = require(__dirname + '/server/controllers/action_accessrolesController');
 
+
+function checkAuth (req, res, next) {
+    //console.log('checkAuth ' + req.url);
+
+    // don't serve /secure to those not logged in
+    // you should add to this list, for each and every secure url
+    if (req.url === '/organizations' && (!req.session || !req.session.authenticated)) {
+        res.render('unauthorised', { status: 403 });
+        return;
+    }
+    if (req.url === '/users' && (!req.session || !req.session.authenticated)) {
+        res.render('unauthorised', { status: 403 });
+        return;
+    }
+    if (req.url === '/roles' && (!req.session || !req.session.authenticated)) {
+        res.render('unauthorised', { status: 403 });
+        return;
+    }
+    if (req.url === '/devices' && (!req.session || !req.session.authenticated)) {
+        res.render('unauthorised', { status: 403 });
+        return;
+    }
+    if (req.url === '/available-monitor' && (!req.session || !req.session.authenticated)) {
+        res.render('unauthorised', { status: 403 });
+        return;
+    }
+
+    next();
+}
+
+//app.use(checkAuth);
 // Log requests to the console.
 app.use(logger('dev'));
 
@@ -31,11 +63,17 @@ app.set('view engine', 'ejs');
 app.set('view options', { layout: false });
 app.use(express.static(__dirname + '/views'))
 
+
+
+//Фильтры EJS
+app.locals.setCurrentDateFormat = function(date) {
+    return moment(new Date(date), 'DD.MM.YYYY HH:mm:ss').format('DD.MM.YYYY HH:mm');
+}
+
 // Setup a default catch-all route that sends back a welcome message in JSON format.
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + "/views/index.html")
+    organizationController.list(req, res)
 });
-
 //routing to main views
 app.get('/organizations', function (req, res, next) {
     organizationController.list(req, res)
@@ -148,6 +186,9 @@ app.get('/createDevice', function (req, res, next) {
 });
 app.get('/getDevice', function (req, res, next) {
     deviceController.retrieve(req, res)
+});
+app.get('/findByName', function (req, res, next) {
+    deviceController.findByName(req, res)
 });
 //---------------Routing for Actions Table--------------------------------------
 app.get('/getActions', function (req, res, next) {

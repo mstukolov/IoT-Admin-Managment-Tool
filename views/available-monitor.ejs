@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript"></script>
     <script src="js/available-monitor.js"></script>
     <link rel="stylesheet" type="text/css" href="css/c2mUI.css">
 
@@ -31,25 +32,33 @@
 </nav>
 </nav>
 <h2>Мониторинг доступности устройств</h2>
+<div class="form-group">
+    <div id="YMapsID" style="width:100%;height:550px" ></div>
+</div>
+
 <div class="row" style="padding-left: 25px;" >
     <div class="col-lg-4">
         <table  id="dataTable" class="datatable table table-bordered table-striped">
             <tr style="height: 50px">
                 <th width="100px">No</th>
+                <th>В сети</th>
                 <th>Значение</th>
-                <th>Время сообщения</th>
+                <th>Последний выход на связь</th>
             </tr>
             <% if(data.length){
             for(var i = 0;i < data.length;i++) { %>
             <tr id="<%=data[i].id%>" class="bg-info">
                 <td width="100px">
-                    <%=data[i].devid%>
+                    <a class='deviceid' href="/device-details?devid=<%=data[i].devid%>"><%=data[i].devid%></a>
+                </td>
+                <td width="100px">
+                    <span id="status_<%=data[i].id%>" name="status_<%=data[i].id%>"></span>
                 </td>
                 <td width="100px">
                     <%=data[i].nparam1%>
                 </td>
-                <td width="100px">
-                    <%=data[i].createdAt%>
+                <td width="100px" id="time_<%=data[i].id%>" class="time">
+                        <%=setCurrentDateFormat(data[i].createdAt)%>
                 </td>
             </tr>
             <% }
@@ -59,11 +68,6 @@
             </tr>
             <% } %>
         </table>
-    </div>
-    <div class="col-lg-4">
-        <div class="form-group">
-            <div id="YMapsID" style="width:100%;height:550px" ></div>
-        </div>
     </div>
 </div>
 
