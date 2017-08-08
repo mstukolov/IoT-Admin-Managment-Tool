@@ -24,8 +24,9 @@
             <li><a href="/available-monitor">Мониторинг</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <!--<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>-->
+
+            <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
     </div>
 </nav>
@@ -54,7 +55,7 @@
             <td>
                 <input id="name_<%=orglist[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=orglist[i].organization%>">
             </td>
-            <td><input type="text" readonly="readonly" id="parent_<%=orglist[i].id%>" class="form-control editable" value="<%=orglist[i].parent%>"></td>
+            <td><input type="text" readonly="readonly" id="parent_<%=orglist[i].id%>" class="form-control editable" value="<%=orglist[i].parentorg.organization%>"></td>
             <td><%=orglist[i].active%></td>
             <td>
                 <input id="qty<%=orglist[i].id%>" readonly="readonly" type="text" class="form-control editable" value="<%=orglist[i].inventQty%>">

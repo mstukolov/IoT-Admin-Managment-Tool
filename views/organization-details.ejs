@@ -35,7 +35,7 @@
         <div>
             <%if (statusMessage != ''){%>
             <div class="alert <%=statusEvent%>"> <strong>Сообщение:</strong> <%=statusMessage%></div><% }%>
-            <form method="GET" action="/updateOrganization">
+            <form method="POST" action="/updateOrganization">
                 <div class="form-group">
                     <label for="id">Код организации:</label>
                     <input type="text" class="form-control" id="orgId" name="orgId" value="<%=data.id%>" readonly="readonly">
@@ -44,7 +44,12 @@
                     <input type="text" class="form-control" id="name" name="name" value="<%=data.organization%>">
 
                     <label for="parent">Головная орагнизация:</label>
-                    <input type="text" class="form-control" id="parent" name="parent" value="<%=data.parent%>" readonly="readonly">
+                    <div class="form-inline">
+                        <input type="text" class="form-control" id="parent_id" name="parent_id" value="<%=data.parentorgId%>" style="width: 94%">
+                        <input type="text" class="form-control" id="parent_name" name="parent_name" readonly="readonly" style="width: 94%">
+                        <input type="button" value="..." id="lookupOrgBtn_<%=data.id%>" class="lookupOrgs">
+                    </div>
+
 
                     <label for="active">Активность:</label>
                     <select class="form-control" id="active" name="active" value="<%=data.active%>">
@@ -80,6 +85,27 @@
         </div>
     </div>
 </div>
-
+<!-- The Modal -->
+<div id="organizationLookup" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content" style="width:850px;">
+        <span class="close">&times;</span>
+        <h3>Выбор организации</h3>
+        Пользователь:<span name="recId" id="recId"></span>
+        <br/>
+        <input type="text" class="form-control" id="findInput" onkeyup="findTableRows('lookupOrgTable', this.id)" placeholder="Search for orgs..">
+        <table class="table table-bordered table-hover table-striped" id="lookupOrgTable">
+            <thead>
+            <tr id="row00" class="bg-info">
+                <th>No</th>
+                <th>Организация</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-default" onclick="organizationLookup.style.display = 'none'">Отмена</button>
+    </div>
+</div>
 </body>
 </html>

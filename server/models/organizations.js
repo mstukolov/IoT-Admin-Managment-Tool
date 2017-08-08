@@ -3,7 +3,7 @@ module.exports = function(sequelize, DataTypes) {
   var Organizations = sequelize.define('Organizations', {
     id:{type:DataTypes.BIGINT, primaryKey: true},
     organization: DataTypes.STRING,
-    parent: DataTypes.BIGINT,
+    parentorgId: DataTypes.BIGINT,
     active: DataTypes.BOOLEAN,
     agreement: DataTypes.STRING,
     agreementDate: DataTypes.DATE,
@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+
       }
     }
   });
