@@ -25,7 +25,7 @@ module.exports = {
     list(req, res) {
         return Accessroles
                 .all()
-                .then(accessroles => res.status(200).render('roles', {data : accessroles }))
+                .then(accessroles => res.status(200).render('roles', {data : accessroles, user:req.session.username }))
     .catch(error => res.status(400).send(error));
     },
     listJson(req, res) {
@@ -36,12 +36,8 @@ module.exports = {
         return Accessroles
                 .findById(req.query.roleId)
                 .then(role => {
-                if (!role) {
-            return res.status(404).send({
-                message: 'Todo Not Found',
-            });
-        }
-        return res.status(200).send(role);
+                if (!role) {return res.status(404).send({message: 'Todo Not Found'});}
+                return res.status(200).send(role);
     })
     .catch(error => res.status(400).send(error));
     },
@@ -63,7 +59,7 @@ module.exports = {
                 })
                 .then(role =>
             {if (!role) { return res.status(404).send({message: 'Role Not Found',})}
-        return res.status(200).render('role-details', {data : role, statusMessage : '', statusEvent: '' });
+        return res.status(200).render('role-details', {data : role, statusMessage : '', statusEvent: '', user:req.session.username });
     })
     .catch(error => res.status(400).send(error));
     },

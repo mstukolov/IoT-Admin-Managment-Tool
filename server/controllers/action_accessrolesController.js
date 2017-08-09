@@ -12,7 +12,7 @@ module.exports = {
     list(req, res) {
         return Action_accessroles
                 .all()
-                .then(list => res.status(200).render('roles', {data : list }))
+                .then(list => res.status(200).render('roles', {data : list, user:req.session.username }))
                 .catch(error => res.status(400).send(error));
     },
     listJson(req, res) {
@@ -30,7 +30,7 @@ module.exports = {
                 })
                 .then(list =>
                     {if (!list) { return res.status(404).send({message: 'Actions Not Found',})}
-                        return res.status(200).render('role-details', {data : list, statusMessage : '', statusEvent: '' })})
+                        return res.status(200).render('role-details', {data : list, statusMessage : '', statusEvent: '', user:req.session.username, role: req.query.roleid })})
                 .catch(error => res.status(400).send(error));
     },
     create(req, res) {
@@ -42,13 +42,22 @@ module.exports = {
                 .then(res.redirect('/role-details?roleid=' + req.query.roleid))
                 .catch(error => res.status(400).send(error));
     },
+    createJoin(role) {
+        return Action_accessroles
+                .create({
+                    roleid: role,
+                    actionid: 15
+                })
+                .then(res.redirect('/role-details?roleid=' + role.roleid))
+                .catch(error => res.status(400).send(error));
+    },
     destroy(req, res) {
         return Action_accessroles
                 .findById(req.query.refid)
                 .then(reference => {if (!reference) {return res.status(400).send({message: 'Reference Not Found'});}
                 return reference
                         .destroy()
-                        .then(res.redirect('/users'))
+                        .then(res.redirect('/role-details?roleid=' + reference.roleid))
                         .catch(error => res.status(400).send(error))})
                         .catch(error => res.status(400).send(error))}
 };

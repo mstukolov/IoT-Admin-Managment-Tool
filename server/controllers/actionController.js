@@ -9,7 +9,7 @@ module.exports = {
     list(req, res) {
         return Actions
                 .all()
-                .then(list => res.status(200).render('roles', {data : list }))
+                .then(list => res.status(200).render('roles', {data : list, user:req.session.username }))
                 .catch(error => res.status(400).send(error));
     },
     listJson(req, res) {

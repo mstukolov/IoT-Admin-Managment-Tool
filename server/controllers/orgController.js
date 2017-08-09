@@ -9,15 +9,14 @@ module.exports = {
         return Organizations
                 .create({
                     organization: req.query.organization,
-                    parent: 0,
-                    active: false
+                    parentorgId: 0,
+                    active: 'Блокирован'
                 })
         .then(res.redirect('/organizations'))
         .catch(error => res.status(400).send(error));
     },
     update(req, res) {
         return Organizations
-                //.findById(req.query.orgId)
                 .findOne({
                     include: [{model: Organizations, as: 'parentorg'}],
                     where: {id: req.body.orgId}
@@ -38,7 +37,7 @@ module.exports = {
                     })
                     .then(organization =>
                         {
-                        res.render('organization-details',{data: organization, statusMessage : 'Успешно сохранено', statusEvent: 'alert-success' })
+                        res.render('organization-details',{data: organization, statusMessage : 'Успешно сохранено', statusEvent: 'alert-success',user:req.session.username })
                         }
                     )
                     .catch((error) => res.status(400).send(error))})
@@ -47,7 +46,7 @@ module.exports = {
     list(req, res) {
         return Organizations
                 .all({include: [{model: Organizations, as: 'parentorg'}]})
-                .then(list => res.status(200).render('organizations', {orglist: list}))
+                .then(list => res.status(200).render('organizations', {orglist: list, user:req.session.username}))
                 .catch(error => res.status(400).send(error));
     },
     listRaw(req, res) {
@@ -76,7 +75,7 @@ module.exports = {
                 })
                 .then(organization =>
             {if (!organization) { return res.status(404).send({message: 'device Not Found',})}
-        return res.status(200).render('organization-details', {data : organization, statusMessage : '', statusEvent: '' });
+        return res.status(200).render('organization-details', {data : organization, statusMessage : '', statusEvent: '', user:req.session.username });
     })
     .catch(error => res.status(400).send(error));
     },

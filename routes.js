@@ -10,18 +10,28 @@ const actionController = require(__dirname + '/server/controllers/actionControll
 const action_accessrolesController = require(__dirname + '/server/controllers/action_accessrolesController');
 
 module.exports = function (app) {
-    app.post('/login', function (req, res, next) {
 
-        if(req.body.username == 'admin' && req.body.password == '123456'){
-            req.session.authenticated = true;
-            req.session.username = req.body.username;
-            req.session.viewRoot = 'advanced';
-            organizationController.list(req, res)
-        }else{
-            req.flash('error', 'Username and password are incorrect');
-            res.render('unauthorised', { status: 403 });
+    //---------------Security Routing----------------------------------------------
+    function checkAuth (req, res, next) {
+
+        if(req.url !== '/login') {
+            if (req.url !== '/' && (!req.session || !req.session.authenticated)) {
+                res.render('unauthorised', {status: 403});
+                return;
+            }
         }
+        next();
+    }
+    app.use(checkAuth);
+    app.post('/login', function (req, res, next) {
+        usersController.auth(req,res)
     });
+    app.get('/logout', function (req, res, next) {
+        delete req.session.authenticated;
+        res.redirect('/');
+    });
+    //---------------Security Routing----------------------------------------------
+
     // Setup a default catch-all route that sends back a welcome message in JSON format.
     app.get('/', function(req, res) {
         res.render('welcome');
@@ -46,7 +56,7 @@ module.exports = function (app) {
         request( {
             url : "https://smartcoolerbackend.mybluemix.net/getlasttrans"
         },function (error, response, body) {
-            res.render('available-monitor', {data: JSON.parse(body)})
+            res.render('available-monitor', {data: JSON.parse(body), user:req.session.username})
         });
     });
     app.get('/device-details', function (req, res, next) {

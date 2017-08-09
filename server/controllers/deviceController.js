@@ -39,7 +39,7 @@ module.exports = {
                     device['devid'] = device.devid + device.id;
                     ibmiotfClient.registerDevice(device.devtype, device.devid,"12345678").then (function onSuccess (argument) {
                         console.log("Success"); console.log(argument);
-                        res.render('device-details',{data: device, statusMessage : 'Устройство создано', statusEvent: 'alert-success' })
+                        res.render('device-details',{data: device, statusMessage : 'Устройство создано', statusEvent: 'alert-success',user:req.session.username })
                         }, function onError (argument) {
                         console.log("Fail"); console.log(argument.data);
                     })
@@ -61,7 +61,8 @@ module.exports = {
                             name: req.body.name || device.name,
                             addhour: req.body.addhour || '+03:00',
                             address: req.body.address || device.address})
-                        .then(res.render('device-details',{data: device, statusMessage : 'Успешно сохранено', statusEvent: 'alert-success' }))
+                        .then(res.render('device-details',
+                            {data: device, statusMessage : 'Успешно сохранено', statusEvent: 'alert-success', user:req.session.username }))
                         .catch((error) => res.status(400).send(error));})
                         .catch((error) => res.status(400).send(error));
     },
@@ -72,7 +73,7 @@ module.exports = {
                         {model: Organizations, as: 'org'}
                     ]
                 })
-                .then(data => res.status(200).render('devices', {data : data }))
+                .then(data => res.status(200).render('devices', {data : data, user:req.session.username }))
     .catch(error => res.status(400).send(error));
     },
     retrieve(req, res) {
@@ -102,7 +103,7 @@ module.exports = {
                 })
                 .then(device =>
                     {if (!device) { return res.status(404).send({message: 'device Not Found',})}
-                    return res.status(200).render('device-details', {data : device, statusMessage : '', statusEvent: '' });
+                    return res.status(200).render('device-details', {data : device, statusMessage : '', statusEvent: '', user:req.session.username });
     })
     .catch(error => res.status(400).send(error));
     },
