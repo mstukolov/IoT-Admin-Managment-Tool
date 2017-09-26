@@ -8,7 +8,7 @@ module.exports = {
     create(req, res) {
         return Organizations
                 .create({
-                    organization: req.query.organization,
+                    organization: req.query.organization || 'new orgs',
                     parentorgId: 0,
                     active: 'Блокирован'
                 })
@@ -91,7 +91,9 @@ module.exports = {
                 return organization
                 .destroy()
                 .then(res.redirect('/organizations'))
-                .catch(error => res.status(400).send(error));
-                })
-                .catch(error => res.status(400).send(error))}
+                .catch(error =>
+                    {
+                        res.status(400).send(error)
+                    }
+                )}).catch(error => res.status(400).send(error))}
 };

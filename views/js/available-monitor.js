@@ -31,7 +31,7 @@ window.onload = function () {
         var status = document.getElementById("status_"+(elements[i].id).substr(5,12));
         if(delta > 300000){
             status.innerText = "Устройство не доступно"
-            document.getElementById((elements[i].id).substr(5,12)).className = 'bad'
+            //document.getElementById((elements[i].id).substr(5,12)).className = 'bad'
         } else {status.innerText = "ОК"}
 
 

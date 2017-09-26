@@ -40,7 +40,7 @@ app.use(session({
 
 //Фильтры EJS
 app.locals.setCurrentDateFormat = function(date) {
-    return moment(new Date(date), 'DD.MM.YYYY HH:mm:ss').format('DD.MM.YYYY HH:mm');
+    return  moment.tz(new Date(date), "Europe/Moscow").format('DD.MM.YYYY HH:mm');
 }
 
 require('./routes.js')(app);

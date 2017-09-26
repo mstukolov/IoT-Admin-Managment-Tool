@@ -24,7 +24,7 @@ module.exports = {
     create(req, res) {
         return Devices
                 .create({
-                    orgid: req.query.organization || 57,
+                    orgid: req.query.organization || 0,
                     devid: req.query.devid || 'SmartCooler',
                     devtype: req.query.devtype || 'SmartCooler',
                     lng: req.query.lng || 0,

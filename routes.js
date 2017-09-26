@@ -8,6 +8,7 @@ const devicetransController = require(__dirname + '/server/controllers/devicetra
 const deviceController = require(__dirname + '/server/controllers/deviceController');
 const actionController = require(__dirname + '/server/controllers/actionController');
 const action_accessrolesController = require(__dirname + '/server/controllers/action_accessrolesController');
+const deliveryScheduleController = require(__dirname + '/server/controllers/deliveryScheduleController');
 
 module.exports = function (app) {
 
@@ -40,6 +41,9 @@ module.exports = function (app) {
     app.get('/organizations', function (req, res, next) {
         organizationController.list(req, res)
     });
+    app.get('/create-org-delivery-schedule', function (req, res, next) {
+        deliveryScheduleController.create(req, res)
+    });
     app.get('/users', function (req, res, next) {
         usersController.listJoinRef(req, res)
     });
@@ -54,7 +58,8 @@ module.exports = function (app) {
     });
     app.get('/available-monitor', function (req, res, next) {
         request( {
-            url : "https://smartcoolerbackend.mybluemix.net/getlasttrans"
+            url : "https://smartcoolerbackend.mybluemix.net" + "/getlasttrans"
+            //url : "http://localhost:6013" + "/getlasttrans"
         },function (error, response, body) {
             res.render('available-monitor', {data: JSON.parse(body), user:req.session.username})
         });

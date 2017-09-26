@@ -30,61 +30,115 @@
     </div>
 </nav>
 </nav>
-<h3 style="padding: 25px;"> Настройки организации: <%=data.organization%></h3>
-<div class="row" style="padding-left: 25px;" >
-    <div class="col-lg-4">
-        <div>
-            <%if (statusMessage != ''){%>
-            <div class="alert <%=statusEvent%>"> <strong>Сообщение:</strong> <%=statusMessage%></div><% }%>
-            <form method="POST" action="/updateOrganization">
-                <div class="form-group">
-                    <label for="id">Код организации:</label>
-                    <input type="text" class="form-control" id="orgId" name="orgId" value="<%=data.id%>" readonly="readonly">
+<h3 style="padding: 25px;"> Организация: <%=data.organization%>(<%=data.id%>)</h3>
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#general">Основное</a></li>
+    <li><a data-toggle="tab" href="#delivery-schedule">График поставки</a></li>
+    <li><a data-toggle="tab" href="#contacts">Контакты</a></li>
+</ul>
 
-                    <label for="id">Название организации:</label>
-                    <input type="text" class="form-control" id="name" name="name" value="<%=data.organization%>">
+<div class="tab-content">
+    <div id="general" class="tab-pane fade in active">
+        <h3>Основная информация о компании</h3>
+        <div class="row" style="padding-left: 25px;" >
+            <div class="col-lg-4">
+                <form method="POST" action="/updateOrganization">
+                    <div class="form-group">
+                        <label for="id">Код организации:</label>
+                        <input type="text" class="form-control" id="orgId" name="orgId" value="<%=data.id%>" readonly="readonly">
 
-                    <label for="parent">Головная орагнизация:</label>
-                    <div class="form-inline">
-                        <input type="text" class="form-control" id="parent_id" name="parent_id" value="<%=data.parentorgId%>" style="width: 94%">
-                        <input type="text" class="form-control" id="parent_name" name="parent_name" readonly="readonly" style="width: 94%">
-                        <input type="button" value="..." id="lookupOrgBtn_<%=data.id%>" class="lookupOrgs">
+                        <label for="id">Название организации:</label>
+                        <input type="text" class="form-control" id="name" name="name" value="<%=data.organization%>">
+
+                        <label for="parent">Головная орагнизация:</label>
+                        <div class="form-inline">
+                            <input type="text" class="hidden" id="parent_id" name="parent_id" value="<%=data.parentorgId%>" style="width: 94%">
+                            <input type="text" class="form-control" id="parent_name" name="parent_name" readonly="readonly" style="width: 94%">
+                            <input type="button" value="..." id="lookupOrgBtn_<%=data.id%>" class="lookupOrgs">
+                        </div>
+
+
+                        <label for="active">Активность:</label>
+                        <select class="form-control" id="active" name="active" value="<%=data.active%>">
+                            <option>Активный</option>
+                            <option>Блокирован</option>
+                            <option>Отключен</option>
+                        </select>
+
+                        <label for="inventQty">Количество на складе:</label>
+                        <input type="text" class="form-control" id="inventQty" name="inventQty" value="<%=data.inventQty%>">
                     </div>
+                    <div>
+                        <label for="agreement">Договор №:</label>
+                        <input type="text" class="form-control" id="agreement" name="agreement" value="<%=data.agreement%>">
 
+                        <label for="agreementDate">Дата договора:</label>
+                        <input type="text" class="form-control" id="agreementDate" name="agreementDate" value="<%=data.agreementDate%>">
 
-                    <label for="active">Активность:</label>
-                    <select class="form-control" id="active" name="active" value="<%=data.active%>">
-                        <option>Активный</option>
-                        <option>Блокирован</option>
-                        <option>Отключен</option>
-                    </select>
-
-                    <label for="inventQty">Количество на складе:</label>
-                    <input type="text" class="form-control" id="inventQty" name="inventQty" value="<%=data.inventQty%>">
-                </div>
-                <div>
-                    <label for="agreement">Договор №:</label>
-                    <input type="text" class="form-control" id="agreement" name="agreement" value="<%=data.agreement%>">
-
-                    <label for="agreementDate">Дата договора:</label>
-                    <input type="date" class="form-control" id="agreementDate" name="agreementDate" value="<%=data.agreementDate%>">
-
-
-                    <label for="email">Email:</label>
-                    <input type="text" class="form-control" id="email" name="email" value="<%=data.email%>">
-
-                    <label for="phone">Телефон:</label>
-                    <input type="text" class="form-control" id="phone" name="phone" value="<%=data.phone%>">
-
-                    <label for="contact">Контактное лицо:</label>
-                    <input type="text" class="form-control" id="contact" name="contact" value="<%=data.contact%>">
-
-                </div>
-                <br>
-                <button type="submit" class="btn btn-default">Сохранить</button>
-            </form>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-default" style="width: 300px">Сохранить</button>
+                </form>
+            </div>
         </div>
     </div>
+    <div id="delivery-schedule" class="tab-pane fade">
+        <h3>Настройки графика поставок</h3>
+        <div class="row" style="padding-left: 25px;" >
+            <div class="col-lg-4">
+
+                <form method="GET" action="/create-org-delivery-schedule">
+                    <input type="text" class="hidden" id="orgid" name="orgid" value="<%=data.id%>">
+                    <div class="checkbox">
+                        <label><input type="checkbox" id="markmon" name="markmon" value="1" checked>Понедельник</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" id="marktue" name="marktue" value="1" checked>Вторник</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" id="markwen" name="markwen" value="1" checked>Среда</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" id="markthu" name="markthu" value="1" checked>Четверг</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" id="markfri" name="markfri" value="1" checked>Пятница</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-default" style="width: 300px">Создать график поставок</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div id="contacts" class="tab-pane fade">
+        <h3>Контактная информация</h3>
+        <div class="row" style="padding-left: 25px;" >
+            <div class="col-lg-4">
+                <form method="POST" action="/updateOrganization">
+                    <div class="form-group">
+                        <label for="id">Код организации:</label>
+                        <input type="text" class="form-control" id="orgId" name="orgId" value="<%=data.id%>" readonly="readonly">
+                    </div>
+                    <div>
+                        <label for="email">Email:</label>
+                        <input type="text" class="form-control" id="email" name="email" value="<%=data.email%>">
+
+                        <label for="phone">Телефон:</label>
+                        <input type="text" class="form-control" id="phone" name="phone" value="<%=data.phone%>">
+
+                        <label for="contact">Контактное лицо:</label>
+                        <input type="text" class="form-control" id="contact" name="contact" value="<%=data.contact%>">
+
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-default" style="width: 300px">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>
 <!-- The Modal -->
 <div id="organizationLookup" class="modal">
