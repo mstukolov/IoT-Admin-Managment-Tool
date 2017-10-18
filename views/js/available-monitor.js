@@ -22,8 +22,6 @@ window.onload = function () {
         });
     }
 
-
-
     var elements = document.getElementsByClassName("time");
     var curdate = new Date()
     for(var i=0; i<elements.length; i++) {
@@ -31,9 +29,6 @@ window.onload = function () {
         var status = document.getElementById("status_"+(elements[i].id).substr(5,12));
         if(delta > 300000){
             status.innerText = "Устройство не доступно"
-            //document.getElementById((elements[i].id).substr(5,12)).className = 'bad'
         } else {status.innerText = "ОК"}
-
-
     }
 };

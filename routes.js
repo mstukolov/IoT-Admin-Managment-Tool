@@ -56,12 +56,30 @@ module.exports = function (app) {
     app.get('/devices', function (req, res, next) {
         deviceController.list(req, res)
     });
+
+    app.get('/statloadtrans', function (req, res, next) {
+        res.render('statloadtrans', {statloadtrans: {}, user:req.session.username})
+    });
+
     app.get('/available-monitor', function (req, res, next) {
         request( {
             url : "https://smartcoolerbackend.mybluemix.net" + "/getlasttrans"
-            //url : "http://localhost:6013" + "/getlasttrans"
         },function (error, response, body) {
             res.render('available-monitor', {data: JSON.parse(body), user:req.session.username})
+        });
+    });
+    app.get('/show-statloadtransday', function (req, res, next) {
+        request( {
+            url : "https://smartcoolerbackend.mybluemix.net" + "/statloadtransday"
+        },function (error, response, body) {
+            res.send({data: JSON.parse(body)})
+        });
+    });
+    app.get('/statloadtranshour', function (req, res, next) {
+        request( {
+            url : "https://smartcoolerbackend.mybluemix.net" + "/statloadtranshour?devid=" + req.query.devid
+        },function (error, response, body) {
+            res.render('statloadtranshour', {data: JSON.parse(body), user:req.session.username})
         });
     });
     app.get('/device-details', function (req, res, next) {

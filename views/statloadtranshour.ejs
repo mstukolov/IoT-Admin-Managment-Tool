@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TEST HTML</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript"></script>
+    <script src="js/statloadtranshour.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/c2mUI.css">
+
+    <!--Построение графика-->
+    <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.3.0.min.js"></script>
+
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">C2M Admin Panel</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/organizations">Организации</a></li>
+            <li><a href="/users">Пользователи</a></li>
+            <li><a href="/roles">Роли</a></li>
+            <li><a href="/devices">Устройства</a></li>
+            <li><a href="/available-monitor">Мониторинг</a></li>
+            <li class="active"><a href="/statloadtrans">Zabbix Monitoring</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=user%></a></li>
+            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+    </div>
+</nav>
+</nav>
+<h2>Доступность устройств по часам</h2>
+
+<div class="row" style="padding-left: 25px;" >
+    <div class="data" data-value="<%= JSON.stringify(data)%>"></div>
+
+    <div id="chartContainer" style="height: 50%;"></div>
+    <table  id="dataTable" class="datatable table table-bordered table-striped">
+        <tr style="height: 50px">
+            <th width="100px">No</th>
+            <th>Дата</th>
+            <th>Полная дата</th>
+            <th>День</th>
+            <th>Час</th>
+            <th>Сообщений(Кол-во)</th>
+        </tr>
+        <% if(data.length){
+        for(var i = 0;i < data.length;i++) { %>
+        <tr id="<%=data[i].id%>" class="bg-info">
+            <td width="10%">
+               <%=data[i].devid%>
+            </td>
+            <td width="5%">
+                <%=data[i].recdate%>
+            </td>
+            <td width="10%">
+                <%=data[i].recdatehour%>
+            </td>
+            <td width="10%">
+                <%=data[i].recday%>
+            </td>
+            <td width="10%">
+                <%=data[i].rechour%>
+            </td>
+            <td width="10%">
+                <%=data[i].countevent%>
+            </td>
+        </tr>
+        <% }
+        }else{ %>
+        <tr>
+            <td colspan="3">No data</td>
+        </tr>
+        <% } %>
+    </table>
+
+
+</div>
+
+</body>
+</html>
